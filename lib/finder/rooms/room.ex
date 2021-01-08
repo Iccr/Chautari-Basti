@@ -15,6 +15,7 @@ defmodule Finder.Rooms.Room do
     field :district_name, :string
     field :available, :boolean
     belongs_to :district, Finder.Districts.District
+    many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
     timestamps()
   end
 
