@@ -5,7 +5,7 @@ defmodule Finder.Districts.District do
   schema "districts" do
     field :name, :string
     field :state, :integer
-
+    has_many :rooms, Finder.Rooms.Room
     timestamps()
   end
 
