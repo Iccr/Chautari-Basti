@@ -21,15 +21,24 @@ defmodule FinderWeb.RoomController do
   end
 
   def show(conn, %{"id" => id}) do
-    room = Rooms.get_room!(id)
-    render(conn, "show.json", room: room)
+    case Rooms.get_room(id) do
+      nil ->
+        {:error, :not_found}
+
+      room ->
+        render(conn, "show.json", room: room)
+    end
   end
 
   def update(conn, %{"id" => id, "room" => room_params}) do
-    room = Rooms.get_room!(id)
+    case Rooms.get_room(id) do
+      nil ->
+        {:error, :not_found}
 
-    with {:ok, %Room{} = room} <- Rooms.update_room(room, room_params) do
-      render(conn, "show.json", room: room)
+      room ->
+        with {:ok, %Room{} = room} <- Rooms.update_room(room, room_params) do
+          render(conn, "show.json", room: room)
+        end
     end
   end
 
