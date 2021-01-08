@@ -11,8 +11,21 @@ defmodule FinderWeb.DistrictView do
   end
 
   def render("district.json", %{district: district}) do
-    %{id: district.id,
+    IO.inspect(district)
+
+    %{
+      id: district.id,
       state: district.state,
-      name: district.name}
+      name: district.name,
+      rooms: render_rooms(district.rooms)
+    }
+  end
+
+  defp render_rooms(%Ecto.Association.NotLoaded{}) do
+    render_many([], FinderWeb.RoomView, "room.json")
+  end
+
+  defp render_rooms(rooms) do
+    render_many(rooms, FinderWeb.RoomView, "room.json")
   end
 end

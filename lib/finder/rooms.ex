@@ -3,7 +3,7 @@ defmodule Finder.Rooms do
   The Rooms context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.{Query, Changeset}, warn: false
   alias Finder.Repo
 
   alias Finder.Rooms.Room
@@ -50,9 +50,20 @@ defmodule Finder.Rooms do
 
   """
   def create_room(attrs \\ %{}) do
-    %Room{}
-    |> Room.changeset(attrs)
-    |> Repo.insert()
+    changeset = Room.changeset(%Room{}, attrs)
+
+    case changeset do
+      %Ecto.Changeset{valid?: false} ->
+        changeset
+        |> apply_action(:insert)
+
+      _ ->
+        district = Finder.Districts.get_district!(attrs["district"])
+
+        changeset
+        |> put_assoc(:district, district)
+        |> Repo.insert()
+    end
   end
 
   @doc """

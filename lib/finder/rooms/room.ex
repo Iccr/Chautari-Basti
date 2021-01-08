@@ -8,6 +8,7 @@ defmodule Finder.Rooms.Room do
     field :long, :decimal
     field :number_of_rooms, :integer
     field :price, :decimal
+
     belongs_to :district, Finder.Districts.District
     timestamps()
   end
@@ -17,5 +18,16 @@ defmodule Finder.Rooms.Room do
     room
     |> cast(attrs, [:lat, :long, :address, :price, :number_of_rooms])
     |> validate_required([:lat, :long, :address, :price, :number_of_rooms])
+    |> validate_presence_of_district(attrs)
+  end
+
+  def validate_presence_of_district(changeset, attrs) do
+    case attrs["district"] do
+      nil ->
+        add_error(changeset, :district, "district must be present")
+
+      _ ->
+        changeset
+    end
   end
 end

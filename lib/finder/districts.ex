@@ -38,6 +38,24 @@ defmodule Finder.Districts do
   def get_district!(id), do: Repo.get!(District, id)
 
   @doc """
+  Gets a single district.
+
+  Raises `Ecto.NoResultsError` if the District does not exist.
+
+  ## Examples
+
+      iex> get_district!(123)
+      %District{}
+
+      iex> get_district!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_preloaded_district(id) do
+    Repo.get(District, id) |> Repo.preload(:rooms)
+  end
+
+  @doc """
   Creates a district.
 
   ## Examples
