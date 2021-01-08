@@ -14,5 +14,6 @@ defmodule Finder.Parkings.Parking do
     parking
     |> cast(attrs, [:name, :tag])
     |> validate_required([:name, :tag])
+    |> unique_constraint(:name)
   end
 end

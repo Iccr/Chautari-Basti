@@ -8,6 +8,6 @@ defmodule Finder.Repo.Migrations.CreateWaters do
 
       timestamps()
     end
-
+    create unique_index(:waters, [:name])
   end
 end

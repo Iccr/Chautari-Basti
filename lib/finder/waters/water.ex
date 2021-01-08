@@ -14,5 +14,6 @@ defmodule Finder.Waters.Water do
     water
     |> cast(attrs, [:name, :tag])
     |> validate_required([:name, :tag])
+    |> unique_constraint(:name)
   end
 end

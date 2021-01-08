@@ -8,6 +8,6 @@ defmodule Finder.Repo.Migrations.CreateAmenities do
 
       timestamps()
     end
-
+    create unique_index(:amenities, [:name])
   end
 end

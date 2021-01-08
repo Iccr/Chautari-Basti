@@ -9,5 +9,7 @@ defmodule Finder.Repo.Migrations.CreateParkings do
       timestamps()
     end
 
+    create unique_index(:parkings, [:name])
+
   end
 end
