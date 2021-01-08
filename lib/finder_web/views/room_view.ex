@@ -11,11 +11,15 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("room.json", %{room: room}) do
-    %{id: room.id,
+    %{
+      id: room.id,
       lat: room.lat,
       long: room.long,
       address: room.address,
       price: room.price,
-      number_of_rooms: room.number_of_rooms}
+      number_of_rooms: room.number_of_rooms,
+      state: room.state,
+      district_name: room.district_name
+    }
   end
 end

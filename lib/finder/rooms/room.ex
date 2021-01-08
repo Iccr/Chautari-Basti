@@ -8,7 +8,8 @@ defmodule Finder.Rooms.Room do
     field :long, :decimal
     field :number_of_rooms, :integer
     field :price, :decimal
-
+    field :state, :integer
+    field :district_name, :string
     belongs_to :district, Finder.Districts.District
     timestamps()
   end

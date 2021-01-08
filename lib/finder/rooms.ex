@@ -62,8 +62,15 @@ defmodule Finder.Rooms do
 
         changeset
         |> put_assoc(:district, district)
+        |> add_district_changes(district)
         |> Repo.insert()
     end
+  end
+
+  defp add_district_changes(changeset, district) do
+    changeset
+    |> put_change(:state, district.state)
+    |> put_change(:district_name, district.name)
   end
 
   @doc """
