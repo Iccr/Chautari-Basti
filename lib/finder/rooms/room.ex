@@ -2,6 +2,9 @@ defmodule Finder.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @permit_fields ~w(lat long address number_of_rooms price state district_name available)a
+  @required_fields ~w(lat long address number_of_rooms price  available)a
+
   schema "rooms" do
     field :address, :string
     field :lat, :decimal
@@ -10,6 +13,7 @@ defmodule Finder.Rooms.Room do
     field :price, :decimal
     field :state, :integer
     field :district_name, :string
+    field :available, :boolean
     belongs_to :district, Finder.Districts.District
     timestamps()
   end
@@ -17,8 +21,8 @@ defmodule Finder.Rooms.Room do
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [:lat, :long, :address, :price, :number_of_rooms])
-    |> validate_required([:lat, :long, :address, :price, :number_of_rooms])
+    |> cast(attrs, @permit_fields)
+    |> validate_required(@required_fields)
     |> validate_presence_of_district(attrs)
   end
 

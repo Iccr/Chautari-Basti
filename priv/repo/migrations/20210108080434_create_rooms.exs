@@ -8,6 +8,7 @@ defmodule Finder.Repo.Migrations.CreateRooms do
       add :address, :string
       add :price, :decimal
       add :number_of_rooms, :integer
+      add :available, :boolean, default: true
 
       timestamps()
     end

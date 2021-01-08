@@ -14,5 +14,6 @@ defmodule Finder.Districts.District do
     district
     |> cast(attrs, [:state, :name])
     |> validate_required([:state, :name])
+    |> unique_constraint(:name)
   end
 end

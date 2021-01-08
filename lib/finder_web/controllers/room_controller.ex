@@ -43,10 +43,14 @@ defmodule FinderWeb.RoomController do
   end
 
   def delete(conn, %{"id" => id}) do
-    room = Rooms.get_room!(id)
+    case Rooms.get_room(id) do
+      nil ->
+        {:error, :not_found}
 
-    with {:ok, %Room{}} <- Rooms.delete_room(room) do
-      send_resp(conn, :no_content, "")
+      room ->
+        with {:ok, %Room{}} <- Rooms.delete_room(room) do
+          render(conn, "show.json", room: room)
+        end
     end
   end
 end
