@@ -9,6 +9,9 @@ defmodule FinderWeb.Router do
     pipe_through :api
     resources "/rooms", RoomController, except: [:new, :edit]
     resources "/districts", DistrictController, only: [:index, :show]
+    resources "/amenities", AmenityController, only: [:index]
+    resources "/waters", WaterController, only: [:index]
+    resources "/parkings", ParkingController, only: [:index]
   end
 
   # Enables LiveDashboard only for development
