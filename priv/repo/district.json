@@ -1,0 +1,310 @@
+[
+    {
+        "name": "Achham",
+        "state": 7
+    },
+    {
+        "name": "Arghakhanchi",
+        "state": 5
+    },
+    {
+        "name": "Baglung",
+        "state": 4
+    },
+    {
+        "name": "Baitadi",
+        "state": 7
+    },
+    {
+        "name": "Bajhang",
+        "state": 7
+    },
+    {
+        "name": "Bajura",
+        "state": 7
+    },
+    {
+        "name": "Banke",
+        "state": 5
+    },
+    {
+        "name": "Bara",
+        "state": 2
+    },
+    {
+        "name": "Bardiya",
+        "state": 5
+    },
+    {
+        "name": "Bhaktapur",
+        "state": 3
+    },
+    {
+        "name": "Bhojpur",
+        "state": 1
+    },
+    {
+        "name": "Chitawan",
+        "state": 3
+    },
+    {
+        "name": "Dadeldhura",
+        "state": 7
+    },
+    {
+        "name": "Dailekh",
+        "state": 6
+    },
+    {
+        "name": "Dang",
+        "state": 5
+    },
+    {
+        "name": "Darchula",
+        "state": 7
+    },
+    {
+        "name": "Dhading",
+        "state": 3
+    },
+    {
+        "name": "Dhankuta",
+        "state": 1
+    },
+    {
+        "name": "Dhanusa",
+        "state": 2
+    },
+    {
+        "name": "Dolakha",
+        "state": 3
+    },
+    {
+        "name": "Dolpa",
+        "state": 6
+    },
+    {
+        "name": "Doti",
+        "state": 7
+    },
+    {
+        "name": "Gorkha",
+        "state": 4
+    },
+    {
+        "name": "Gulmi",
+        "state": 5
+    },
+    {
+        "name": "Humla",
+        "state": 6
+    },
+    {
+        "name": "Ilam",
+        "state": 1
+    },
+    {
+        "name": "Jajarkot",
+        "state": 6
+    },
+    {
+        "name": "Jhapa",
+        "state": 1
+    },
+    {
+        "name": "Jumla",
+        "state": 6
+    },
+    {
+        "name": "Kailali",
+        "state": 7
+    },
+    {
+        "name": "Kalikot",
+        "state": 6
+    },
+    {
+        "name": "Kanchanpur",
+        "state": 7
+    },
+    {
+        "name": "Kapilvastu",
+        "state": 5
+    },
+    {
+        "name": "Kaski",
+        "state": 4
+    },
+    {
+        "name": "Kathmandu",
+        "state": 3
+    },
+    {
+        "name": "Kavrepalanchok",
+        "state": 3
+    },
+    {
+        "name": "Khotang",
+        "state": 1
+    },
+    {
+        "name": "Lalitpur",
+        "state": 3
+    },
+    {
+        "name": "Lamjung",
+        "state": 4
+    },
+    {
+        "name": "Mahottari",
+        "state": 2
+    },
+    {
+        "name": "Makwanpur",
+        "state": 3
+    },
+    {
+        "name": "Manang",
+        "state": 4
+    },
+    {
+        "name": "Morang",
+        "state": 1
+    },
+    {
+        "name": "Mugu",
+        "state": 6
+    },
+    {
+        "name": "Mustang",
+        "state": 4
+    },
+    {
+        "name": "Myagdi",
+        "state": 4
+    },
+    {
+        "name": "Nawalparasi East",
+        "state": 4
+    },
+    {
+        "name": "Nawalparasi West",
+        "state": "13"
+    },
+    {
+        "name": "Nuwakot",
+        "state": 3
+    },
+    {
+        "name": "Okhaldhunga",
+        "state": 1
+    },
+    {
+        "name": "Palpa",
+        "state": 5
+    },
+    {
+        "name": "Panchthar",
+        "state": 1
+    },
+    {
+        "name": "Parbat",
+        "state": 4
+    },
+    {
+        "name": "Parsa",
+        "state": 2
+    },
+    {
+        "name": "Pyuthan",
+        "state": 5
+    },
+    {
+        "name": "Ramechhap",
+        "state": 3
+    },
+    {
+        "name": "Rasuwa",
+        "state": 3
+    },
+    {
+        "name": "Rautahat",
+        "state": 2
+    },
+    {
+        "name": "Rolpa",
+        "state": 5
+    },
+    {
+        "name": "Rukum East",
+        "state": 5
+    },
+    {
+        "name": "Rukum West",
+        "state": "9"
+    },
+    {
+        "name": "Rupandehi",
+        "state": 5
+    },
+    {
+        "name": "Salyan",
+        "state": 6
+    },
+    {
+        "name": "Sankhuwasabha",
+        "state": 1
+    },
+    {
+        "name": "Saptari",
+        "state": 2
+    },
+    {
+        "name": "Sarlahi",
+        "state": 2
+    },
+    {
+        "name": "Sindhuli",
+        "state": 3
+    },
+    {
+        "name": "Sindhupalchok",
+        "state": 3
+    },
+    {
+        "name": "Siraha",
+        "state": 2
+    },
+    {
+        "name": "Solukhumbu",
+        "state": 1
+    },
+    {
+        "name": "Sunsari",
+        "state": 1
+    },
+    {
+        "name": "Surkhet",
+        "state": 6
+    },
+    {
+        "name": "Syangja",
+        "state": 4
+    },
+    {
+        "name": "Tanahu",
+        "state": 4
+    },
+    {
+        "name": "Taplejung",
+        "state": 1
+    },
+    {
+        "name": "Terhathum",
+        "state": 1
+    },
+    {
+        "name": "Udayapur",
+        "state": 1
+    }
+]

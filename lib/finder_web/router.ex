@@ -5,8 +5,9 @@ defmodule FinderWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", FinderWeb do
+  scope "/api/v1", FinderWeb do
     pipe_through :api
+    resources "/rooms", RoomController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
