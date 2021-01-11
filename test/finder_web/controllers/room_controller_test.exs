@@ -13,6 +13,7 @@ defmodule FinderWeb.RoomControllerTest do
     "number_of_rooms" => "1",
     "price" => "3000"
   }
+
   @update_attrs %{
     "address" => "satdobato",
     "available" => true,
@@ -62,7 +63,6 @@ defmodule FinderWeb.RoomControllerTest do
 
       conn = post(conn, Routes.room_path(conn, :create), room: new_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
-
       conn = get(conn, Routes.room_path(conn, :show, id))
 
       assert %{
@@ -72,6 +72,66 @@ defmodule FinderWeb.RoomControllerTest do
                "lat" => "27.7172",
                "long" => "85.3240",
                "number_of_rooms" => 1,
+               "parking_count" => 0,
+               "amenity_count" => 0,
+               "price" => "3000"
+             } = json_response(conn, 200)["data"]
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, Routes.room_path(conn, :create), room: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "create room with parking  id should yeild parking_count" do
+    test "renders room with parking_count when data is valid", %{conn: conn} do
+      district = Finder.Districts.list_districts() |> Enum.at(0)
+      parking = Finder.Parkings.list_parkings() |> Enum.at(0)
+      attrs = %{@create_attrs | "district" => district.id}
+      new_attrs = Map.put(attrs, :parkings, [parking.id])
+      conn = post(conn, Routes.room_path(conn, :create), room: new_attrs)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+      conn = get(conn, Routes.room_path(conn, :show, id))
+
+      assert %{
+               "address" => "satdobato",
+               "available" => true,
+               "district_name" => "Achham",
+               "lat" => "27.7172",
+               "long" => "85.3240",
+               "number_of_rooms" => 1,
+               "parking_count" => 1,
+               "amenity_count" => 0,
+               "price" => "3000"
+             } = json_response(conn, 200)["data"]
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, Routes.room_path(conn, :create), room: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "create room with amenity  id should yeild amenity_count" do
+    test "renders room with amenity_count when data is valid", %{conn: conn} do
+      district = Finder.Districts.list_districts() |> Enum.at(0)
+      amenity = Finder.Amenities.list_amenities() |> Enum.at(0)
+      attrs = %{@create_attrs | "district" => district.id}
+      new_attrs = Map.put(attrs, :amenities, [amenity.id])
+      conn = post(conn, Routes.room_path(conn, :create), room: new_attrs)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+      conn = get(conn, Routes.room_path(conn, :show, id))
+
+      assert %{
+               "address" => "satdobato",
+               "available" => true,
+               "district_name" => "Achham",
+               "lat" => "27.7172",
+               "long" => "85.3240",
+               "number_of_rooms" => 1,
+               "parking_count" => 0,
+               "amenity_count" => 1,
                "price" => "3000"
              } = json_response(conn, 200)["data"]
     end
