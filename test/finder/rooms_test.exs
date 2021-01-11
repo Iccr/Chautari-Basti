@@ -8,6 +8,7 @@ defmodule Finder.RoomsTest do
 
     alias Finder.Parkings
     alias Finder.Parkings.Parking
+    alias Finder.Amenities
 
     @valid_attrs %{name: "Bike", tag: 46}
 
@@ -27,6 +28,18 @@ defmodule Finder.RoomsTest do
       "available" => true,
       "district" => 2,
       "parkings" => [1],
+      "lat" => "27.7172",
+      "long" => "85.3240",
+      "number_of_rooms" => "1",
+      "price" => "3000"
+    }
+
+    @valid_attrs_with_amenities %{
+      "address" => "satdobato",
+      "available" => true,
+      "district" => 2,
+      "parkings" => [1],
+      "aminities" => [1, 2],
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -61,6 +74,15 @@ defmodule Finder.RoomsTest do
       parking
     end
 
+    def amenities_fixture(attrs \\ %{}) do
+      {:ok, amenity} =
+        attrs
+        |> Enum.into(@valid_attrs_with_parkings)
+        |> Amenities.create_amenity()
+
+      amenity
+    end
+
     test "list_rooms/0 returns all rooms" do
       r = room_fixture()
       room = Rooms.get_room!(r.id)
@@ -92,6 +114,22 @@ defmodule Finder.RoomsTest do
 
       assert room.address == "satdobato"
       assert room.parking_count == 1
+      assert room.available == true
+      assert room.district_name == "Arghakhanchi"
+      assert room.lat == Decimal.new("27.7172")
+      assert room.long == Decimal.new("85.3240")
+      assert room.number_of_rooms == 1
+      assert room.price == Decimal.new("3000")
+    end
+
+    test "create_room/1 with valid amenities data creates a room with amenities" do
+      Amenities.create_amenity(@valid_attrs_with_amenities)
+      amenity = Amenities.list_amenities() |> Enum.at(0)
+      map = %{@valid_attrs | "amenities" => [amenity.id]}
+      assert {:ok, %Room{} = room} = Rooms.create_room(map)
+
+      assert room.address == "satdobato"
+      assert room.amenity_count == 1
       assert room.available == true
       assert room.district_name == "Arghakhanchi"
       assert room.lat == Decimal.new("27.7172")

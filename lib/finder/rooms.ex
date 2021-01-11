@@ -66,14 +66,21 @@ defmodule Finder.Rooms do
         district = Finder.Districts.get_district!(attrs["district"])
 
         parkings = Parkings.get_parkings(attrs["parkings"])
+        amenities = Amenities.get_amenities(attrs["amenities"])
 
         changeset
+        |> put_assoc(:amenities, amenities)
+        |> add_amenities_changes(amenities)
         |> put_assoc(:parkings, parkings)
         |> add_parking_changes(parkings)
         |> put_assoc(:district, district)
         |> add_district_changes(district)
         |> Repo.insert()
     end
+  end
+
+  defp add_amenities_changes(changeset, amenities) do
+    put_change(changeset, :amenities, Enum.count(amenities))
   end
 
   defp add_parking_changes(changeset, parkings) do

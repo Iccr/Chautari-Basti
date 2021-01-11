@@ -101,4 +101,10 @@ defmodule Finder.Amenities do
   def change_amenity(%Amenity{} = amenity, attrs \\ %{}) do
     Amenity.changeset(amenity, attrs)
   end
+
+  def get_amenities(nil), do: []
+
+  def get_amenities(ids) do
+    Repo.all(from a in Amenity, where: a.id in ^ids)
+  end
 end
