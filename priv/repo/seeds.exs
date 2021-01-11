@@ -22,12 +22,12 @@ defmodule Seed do
   end
 
   def seed_waters do
-    names = ["24/7", "average", "just ok"]
-    tags = ~w(1 2 3)
+    # names = ["24/7", "average", "just ok"]
+    # tags = ~w(1 2 3)
 
-    for {n, t} <- Enum.zip(names, tags) do
-      Finder.Waters.create_water(%{name: n, tag: t})
-    end
+    # for {n, t} <- Enum.zip(names, tags) do
+    #   Finder.Waters.create_water(%{name: n, tag: t})
+    # end
   end
 
   def seed_amenities do
