@@ -6,8 +6,24 @@ defmodule Finder.RoomsTest do
   describe "rooms" do
     alias Finder.Rooms.Room
 
-    @valid_attrs %{address: "some address", lat: "120.5", long: "120.5", number_of_rooms: 42, price: "120.5"}
-    @update_attrs %{address: "some updated address", lat: "456.7", long: "456.7", number_of_rooms: 43, price: "456.7"}
+    @valid_attrs %{
+      "address" => "satdobato",
+      "available" => true,
+      "district" => 2,
+      "lat" => "27.7172",
+      "long" => "85.3240",
+      "number_of_rooms" => "1",
+      "price" => "3000"
+    }
+
+    @update_attrs %{
+      address: "some updated address",
+      lat: "456.7",
+      long: "456.7",
+      number_of_rooms: 43,
+      available: false,
+      price: "456.7"
+    }
     @invalid_attrs %{address: nil, lat: nil, long: nil, number_of_rooms: nil, price: nil}
 
     def room_fixture(attrs \\ %{}) do
@@ -20,22 +36,26 @@ defmodule Finder.RoomsTest do
     end
 
     test "list_rooms/0 returns all rooms" do
-      room = room_fixture()
+      r = room_fixture()
+      room = Rooms.get_room!(r.id)
       assert Rooms.list_rooms() == [room]
     end
 
     test "get_room!/1 returns the room with given id" do
-      room = room_fixture()
+      r = room_fixture()
+      room = Rooms.get_room!(r.id)
       assert Rooms.get_room!(room.id) == room
     end
 
     test "create_room/1 with valid data creates a room" do
       assert {:ok, %Room{} = room} = Rooms.create_room(@valid_attrs)
-      assert room.address == "some address"
-      assert room.lat == Decimal.new("120.5")
-      assert room.long == Decimal.new("120.5")
-      assert room.number_of_rooms == 42
-      assert room.price == Decimal.new("120.5")
+      assert room.address == "satdobato"
+      assert room.available == true
+      assert room.district_name == "Arghakhanchi"
+      assert room.lat == Decimal.new("27.7172")
+      assert room.long == Decimal.new("85.3240")
+      assert room.number_of_rooms == 1
+      assert room.price == Decimal.new("3000")
     end
 
     test "create_room/1 with invalid data returns error changeset" do
@@ -46,6 +66,7 @@ defmodule Finder.RoomsTest do
       room = room_fixture()
       assert {:ok, %Room{} = room} = Rooms.update_room(room, @update_attrs)
       assert room.address == "some updated address"
+      assert room.available == false
       assert room.lat == Decimal.new("456.7")
       assert room.long == Decimal.new("456.7")
       assert room.number_of_rooms == 43
@@ -53,7 +74,8 @@ defmodule Finder.RoomsTest do
     end
 
     test "update_room/2 with invalid data returns error changeset" do
-      room = room_fixture()
+      r = room_fixture()
+      room = Rooms.get_room!(r.id)
       assert {:error, %Ecto.Changeset{}} = Rooms.update_room(room, @invalid_attrs)
       assert room == Rooms.get_room!(room.id)
     end
