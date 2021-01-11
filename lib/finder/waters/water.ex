@@ -5,7 +5,7 @@ defmodule Finder.Waters.Water do
   schema "waters" do
     field :name, :string
     field :tag, :integer
-
+    many_to_many :rooms, Finder.Rooms.Room, join_through: Finder.Rooms.RoomWater
     timestamps()
   end
 
