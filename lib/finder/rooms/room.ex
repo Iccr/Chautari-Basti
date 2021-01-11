@@ -24,6 +24,12 @@ defmodule Finder.Rooms.Room do
     room
     |> cast(attrs, @permit_fields)
     |> validate_required(@required_fields)
+  end
+
+  def create_changeset(room, attrs) do
+    room
+    |> cast(attrs, @permit_fields)
+    |> validate_required(@required_fields)
     |> validate_presence_of_district(attrs)
   end
 

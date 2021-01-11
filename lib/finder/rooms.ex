@@ -52,7 +52,7 @@ defmodule Finder.Rooms do
 
   """
   def create_room(attrs \\ %{}) do
-    changeset = Room.changeset(%Room{}, attrs)
+    changeset = Room.create_changeset(%Room{}, attrs)
 
     case changeset do
       %Ecto.Changeset{valid?: false} ->

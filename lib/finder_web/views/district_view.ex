@@ -11,8 +11,6 @@ defmodule FinderWeb.DistrictView do
   end
 
   def render("district.json", %{district: district}) do
-    IO.inspect(district)
-
     %{
       id: district.id,
       state: district.state,

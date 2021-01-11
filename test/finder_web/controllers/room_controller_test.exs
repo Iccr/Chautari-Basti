@@ -5,27 +5,46 @@ defmodule FinderWeb.RoomControllerTest do
   alias Finder.Rooms.Room
 
   @create_attrs %{
-    address: "some address",
-    lat: "120.5",
-    long: "120.5",
-    number_of_rooms: 42,
-    price: "120.5"
+    "address" => "satdobato",
+    "available" => true,
+    "district" => 2,
+    "lat" => "27.7172",
+    "long" => "85.3240",
+    "number_of_rooms" => "1",
+    "price" => "3000"
   }
   @update_attrs %{
-    address: "some updated address",
-    lat: "456.7",
-    long: "456.7",
-    number_of_rooms: 43,
-    price: "456.7"
+    "address" => "satdobato",
+    "available" => true,
+    "district" => 2,
+    "lat" => "27.7172",
+    "long" => "85.3240",
+    "number_of_rooms" => "1",
+    "price" => "3000"
   }
-  @invalid_attrs %{address: nil, lat: nil, long: nil, number_of_rooms: nil, price: nil}
+  @invalid_attrs %{
+    "address" => nil,
+    "available" => nil,
+    "lat" => nil,
+    "long" => nil,
+    "number_of_rooms" => nil,
+    "price" => "3000"
+  }
 
   def fixture(:room) do
-    {:ok, room} = Rooms.create_room(@create_attrs)
+    district = Finder.Districts.list_districts() |> Enum.at(0)
+    map = %{@create_attrs | "district" => district.id}
+    {:ok, room} = Rooms.create_room(map)
     room
   end
 
+  def fixture(:district) do
+    {:ok, district} = Finder.Districts.create_district(%{name: "Kathmandu", state: 3})
+    district
+  end
+
   setup %{conn: conn} do
+    Ecto.Adapters.SQL.Sandbox.checkout(Finder.Repo)
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
@@ -38,18 +57,22 @@ defmodule FinderWeb.RoomControllerTest do
 
   describe "create room" do
     test "renders room when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.room_path(conn, :create), room: @create_attrs)
+      district = Finder.Districts.list_districts() |> Enum.at(0)
+      new_attrs = %{@create_attrs | "district" => district.id}
+
+      conn = post(conn, Routes.room_path(conn, :create), room: new_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.room_path(conn, :show, id))
 
       assert %{
-               "id" => id,
-               "address" => "some address",
-               "lat" => "120.5",
-               "long" => "120.5",
-               "number_of_rooms" => 42,
-               "price" => "120.5"
+               "address" => "satdobato",
+               "available" => true,
+               "district_name" => "Achham",
+               "lat" => "27.7172",
+               "long" => "85.3240",
+               "number_of_rooms" => 1,
+               "price" => "3000"
              } = json_response(conn, 200)["data"]
     end
 
@@ -69,12 +92,13 @@ defmodule FinderWeb.RoomControllerTest do
       conn = get(conn, Routes.room_path(conn, :show, id))
 
       assert %{
-               "id" => id,
-               "address" => "some updated address",
-               "lat" => "456.7",
-               "long" => "456.7",
-               "number_of_rooms" => 43,
-               "price" => "456.7"
+               "address" => "satdobato",
+               "available" => true,
+               "district_name" => "Achham",
+               "lat" => "27.7172",
+               "long" => "85.3240",
+               "number_of_rooms" => 1,
+               "price" => "3000"
              } = json_response(conn, 200)["data"]
     end
 
@@ -89,16 +113,24 @@ defmodule FinderWeb.RoomControllerTest do
 
     test "deletes chosen room", %{conn: conn, room: room} do
       conn = delete(conn, Routes.room_path(conn, :delete, room))
-      assert response(conn, 204)
+      assert response(conn, 200)
 
-      assert_error_sent 404, fn ->
-        get(conn, Routes.room_path(conn, :show, room))
-      end
+      # assert_error_sent 404, fn ->
+      #   get(conn, Routes.room_path(conn, :show, room))
+      # end
+      # json_response(conn, 422)["errors"]
+      conn = delete(conn, Routes.room_path(conn, :delete, room))
+      assert json_response(conn, 404)["errors"] != %{}
     end
   end
 
   defp create_room(_) do
     room = fixture(:room)
     %{room: room}
+  end
+
+  defp create_district(_) do
+    district = fixture(:district)
+    %{district: district}
   end
 end
