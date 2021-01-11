@@ -101,4 +101,8 @@ defmodule Finder.Parkings do
   def change_parking(%Parking{} = parking, attrs \\ %{}) do
     Parking.changeset(parking, attrs)
   end
+
+  def get_parkings(ids) do
+    Repo.all(from p in Parking, where: p.id in ^ids)
+  end
 end

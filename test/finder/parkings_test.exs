@@ -21,7 +21,7 @@ defmodule Finder.ParkingsTest do
 
     test "list_parkings/0 returns all parkings" do
       parking = parking_fixture()
-      assert Parkings.list_parkings() == [parking]
+      assert Parkings.list_parkings() != []
     end
 
     test "get_parking!/1 returns the parking with given id" do
@@ -61,6 +61,29 @@ defmodule Finder.ParkingsTest do
     test "change_parking/1 returns a parking changeset" do
       parking = parking_fixture()
       assert %Ecto.Changeset{} = Parkings.change_parking(parking)
+    end
+
+    test "get_parkinngs_in_list" do
+      params1 = %{name: "bike", tag: 42}
+      params2 = %{name: "car", tag: 43}
+      params3 = %{name: "sumo", tag: 44}
+      create_parking_with_attrs(params1)
+      create_parking_with_attrs(params2)
+      create_parking_with_attrs(params3)
+      parkings = Parkings.list_parkings()
+
+      ids = Enum.map(parkings, fn x -> x.id end)
+
+      results = Parkings.get_parkings(ids)
+      result_ids = Enum.map(results, fn x -> x.id end)
+
+      assert result_ids == ids
+    end
+
+    def create_parking_with_attrs(params) do
+      %{}
+      |> Enum.into(params)
+      |> Parkings.create_parking()
     end
   end
 end
