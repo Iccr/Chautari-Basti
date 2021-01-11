@@ -90,7 +90,7 @@ defmodule Finder.RoomsTest do
       assert {:ok, %Room{} = room} = Rooms.create_room(map)
 
       assert room.address == "satdobato"
-      assert room.no_of_parkings == 1
+      assert room.parking_count == 1
       assert room.available == true
       assert room.district_name == "Arghakhanchi"
       assert room.lat == Decimal.new("27.7172")
