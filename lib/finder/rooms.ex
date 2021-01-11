@@ -69,10 +69,15 @@ defmodule Finder.Rooms do
 
         changeset
         |> put_assoc(:parkings, parkings)
+        |> add_parking_changes(parkings)
         |> put_assoc(:district, district)
         |> add_district_changes(district)
         |> Repo.insert()
     end
+  end
+
+  defp add_parking_changes(changeset, parkings) do
+    put_change(changeset, :parking_count, Enum.count(parkings))
   end
 
   defp add_district_changes(changeset, district) do

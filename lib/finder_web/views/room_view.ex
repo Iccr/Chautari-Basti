@@ -20,7 +20,8 @@ defmodule FinderWeb.RoomView do
       number_of_rooms: room.number_of_rooms,
       state: room.state,
       district_name: room.district_name,
-      available: room.available
+      available: room.available,
+      parking_count: room.parking_count
     }
   end
 end

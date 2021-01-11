@@ -15,6 +15,7 @@ defmodule Finder.RoomsTest do
       "address" => "satdobato",
       "available" => true,
       "district" => 2,
+      "parkings" => [1],
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -25,7 +26,7 @@ defmodule Finder.RoomsTest do
       "address" => "satdobato",
       "available" => true,
       "district" => 2,
-      "parkings" => 1,
+      "parkings" => [1],
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -84,7 +85,7 @@ defmodule Finder.RoomsTest do
     end
 
     test "create_room/1 with valid parkings data creates a room with parkings" do
-      Parkings.create_room(@valid_attrs_with_parkings)
+      Parkings.create_parking(@valid_attrs_with_parkings)
       parking = Parkings.get_parking!(1)
       map = %{@valid_attrs | "parkings" => [parking.id]}
       assert {:ok, %Room{} = room} = Rooms.create_room(map)
