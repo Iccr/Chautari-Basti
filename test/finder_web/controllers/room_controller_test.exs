@@ -11,7 +11,8 @@ defmodule FinderWeb.RoomControllerTest do
     "lat" => "27.7172",
     "long" => "85.3240",
     "number_of_rooms" => "1",
-    "price" => "3000"
+    "price" => "3000",
+    "water" => nil
   }
 
   @update_attrs %{

@@ -19,7 +19,7 @@ defmodule Finder.Rooms.Room do
     belongs_to :district, Finder.Districts.District
     many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
     many_to_many :amenities, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
-    many_to_many :waters, Finder.Waters.Water, join_through: Finder.Rooms.RoomWater
+
     timestamps()
   end
 
