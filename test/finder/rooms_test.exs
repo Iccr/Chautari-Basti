@@ -6,10 +6,26 @@ defmodule Finder.RoomsTest do
   describe "rooms" do
     alias Finder.Rooms.Room
 
+    alias Finder.Parkings
+    alias Finder.Parkings.Parking
+
+    @valid_attrs %{name: "Bike", tag: 46}
+
     @valid_attrs %{
       "address" => "satdobato",
       "available" => true,
       "district" => 2,
+      "lat" => "27.7172",
+      "long" => "85.3240",
+      "number_of_rooms" => "1",
+      "price" => "3000"
+    }
+
+    @valid_attrs_with_parkings %{
+      "address" => "satdobato",
+      "available" => true,
+      "district" => 2,
+      "parkings" => 1,
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -35,6 +51,15 @@ defmodule Finder.RoomsTest do
       room
     end
 
+    def parking_fixture(attrs \\ %{}) do
+      {:ok, parking} =
+        attrs
+        |> Enum.into(@valid_attrs_with_parkings)
+        |> Parkings.create_parking()
+
+      parking
+    end
+
     test "list_rooms/0 returns all rooms" do
       r = room_fixture()
       room = Rooms.get_room!(r.id)
@@ -50,6 +75,22 @@ defmodule Finder.RoomsTest do
     test "create_room/1 with valid data creates a room" do
       assert {:ok, %Room{} = room} = Rooms.create_room(@valid_attrs)
       assert room.address == "satdobato"
+      assert room.available == true
+      assert room.district_name == "Arghakhanchi"
+      assert room.lat == Decimal.new("27.7172")
+      assert room.long == Decimal.new("85.3240")
+      assert room.number_of_rooms == 1
+      assert room.price == Decimal.new("3000")
+    end
+
+    test "create_room/1 with valid parkings data creates a room with parkings" do
+      Parkings.create_room(@valid_attrs_with_parkings)
+      parking = Parkings.get_parking!(1)
+      map = %{@valid_attrs | "parkings" => [parking.id]}
+      assert {:ok, %Room{} = room} = Rooms.create_room(map)
+
+      assert room.address == "satdobato"
+      assert room.no_of_parkings == 1
       assert room.available == true
       assert room.district_name == "Arghakhanchi"
       assert room.lat == Decimal.new("27.7172")

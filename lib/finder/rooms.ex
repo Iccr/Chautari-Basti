@@ -7,6 +7,9 @@ defmodule Finder.Rooms do
   alias Finder.Repo
 
   alias Finder.Rooms.Room
+  alias Finder.Districts.District
+  alias Finder.Parkings
+  alias Finder.Amenities
 
   @doc """
   Returns the list of rooms.
@@ -62,7 +65,10 @@ defmodule Finder.Rooms do
       _ ->
         district = Finder.Districts.get_district!(attrs["district"])
 
+        parkings = Parkings.get_parkings(attrs["parkings"])
+
         changeset
+        |> put_assoc(:parkings, parkings)
         |> put_assoc(:district, district)
         |> add_district_changes(district)
         |> Repo.insert()
