@@ -80,7 +80,7 @@ defmodule Finder.Rooms do
   end
 
   defp add_amenities_changes(changeset, amenities) do
-    put_change(changeset, :amenities, Enum.count(amenities))
+    put_change(changeset, :amenity_count, Enum.count(amenities))
   end
 
   defp add_parking_changes(changeset, parkings) do

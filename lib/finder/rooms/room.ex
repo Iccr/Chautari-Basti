@@ -18,6 +18,7 @@ defmodule Finder.Rooms.Room do
     field :amenity_count, :integer
     belongs_to :district, Finder.Districts.District
     many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
+    many_to_many :amenities, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
     timestamps()
   end
 

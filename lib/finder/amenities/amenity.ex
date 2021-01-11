@@ -5,7 +5,7 @@ defmodule Finder.Amenities.Amenity do
   schema "amenities" do
     field :name, :string
     field :tag, :integer
-
+    many_to_many :rooms, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
     timestamps()
   end
 

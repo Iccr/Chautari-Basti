@@ -17,6 +17,9 @@ defmodule Finder.RoomsTest do
       "available" => true,
       "district" => 2,
       "parkings" => [1],
+      "amenities" => [1],
+      "amenity_count" => 0,
+      "parking_count" => 0,
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -39,7 +42,7 @@ defmodule Finder.RoomsTest do
       "available" => true,
       "district" => 2,
       "parkings" => [1],
-      "aminities" => [1, 2],
+      "amenities" => [1, 2],
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
@@ -77,7 +80,7 @@ defmodule Finder.RoomsTest do
     def amenities_fixture(attrs \\ %{}) do
       {:ok, amenity} =
         attrs
-        |> Enum.into(@valid_attrs_with_parkings)
+        |> Enum.into(@valid_attrs_with_amenities)
         |> Amenities.create_amenity()
 
       amenity
