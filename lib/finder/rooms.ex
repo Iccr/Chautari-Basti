@@ -139,4 +139,8 @@ defmodule Finder.Rooms do
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
   end
+
+  def water_types do
+    [{"24/7", 0}, {"Enough for small family", 1}, {"Enough for individuals", 2}]
+  end
 end
