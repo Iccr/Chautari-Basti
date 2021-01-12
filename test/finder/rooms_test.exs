@@ -23,7 +23,8 @@ defmodule Finder.RoomsTest do
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
-      "price" => "3000"
+      "price" => "3000",
+      "water" => 0
     }
 
     @valid_attrs_with_parkings %{
@@ -34,7 +35,8 @@ defmodule Finder.RoomsTest do
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
-      "price" => "3000"
+      "price" => "3000",
+      "water" => 0
     }
 
     @valid_attrs_with_amenities %{
@@ -46,7 +48,8 @@ defmodule Finder.RoomsTest do
       "lat" => "27.7172",
       "long" => "85.3240",
       "number_of_rooms" => "1",
-      "price" => "3000"
+      "price" => "3000",
+      "water" => 0
     }
 
     @update_attrs %{
@@ -55,7 +58,8 @@ defmodule Finder.RoomsTest do
       long: "456.7",
       number_of_rooms: 43,
       available: false,
-      price: "456.7"
+      price: "456.7",
+      water: 1
     }
     @invalid_attrs %{address: nil, lat: nil, long: nil, number_of_rooms: nil, price: nil}
 
@@ -107,6 +111,7 @@ defmodule Finder.RoomsTest do
       assert room.long == Decimal.new("85.3240")
       assert room.number_of_rooms == 1
       assert room.price == Decimal.new("3000")
+      assert room.water == 0
     end
 
     test "create_room/1 with valid parkings data creates a room with parkings" do
@@ -123,6 +128,7 @@ defmodule Finder.RoomsTest do
       assert room.long == Decimal.new("85.3240")
       assert room.number_of_rooms == 1
       assert room.price == Decimal.new("3000")
+      assert room.water == 0
     end
 
     test "create_room/1 with valid amenities data creates a room with amenities" do
@@ -139,6 +145,7 @@ defmodule Finder.RoomsTest do
       assert room.long == Decimal.new("85.3240")
       assert room.number_of_rooms == 1
       assert room.price == Decimal.new("3000")
+      assert room.water == 0
     end
 
     test "create_room/1 with invalid data returns error changeset" do
@@ -154,6 +161,7 @@ defmodule Finder.RoomsTest do
       assert room.long == Decimal.new("456.7")
       assert room.number_of_rooms == 43
       assert room.price == Decimal.new("456.7")
+      assert room.water == 1
     end
 
     test "update_room/2 with invalid data returns error changeset" do

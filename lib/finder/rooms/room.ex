@@ -2,8 +2,8 @@ defmodule Finder.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @permit_fields ~w(lat long address number_of_rooms price state district_name available)a
-  @required_fields ~w(lat long address number_of_rooms price  available)a
+  @permit_fields ~w(lat long address number_of_rooms price state district_name available water)a
+  @required_fields ~w(lat long address number_of_rooms price  available water)a
 
   schema "rooms" do
     field :address, :string

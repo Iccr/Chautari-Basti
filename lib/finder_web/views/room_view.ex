@@ -11,6 +11,7 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("room.json", %{room: room}) do
+    water_value = Finder.Rooms.get_water_type_by_id(room.water).name
     %{
       id: room.id,
       lat: room.lat,
@@ -22,7 +23,8 @@ defmodule FinderWeb.RoomView do
       district_name: room.district_name,
       available: room.available,
       parking_count: room.parking_count,
-      amenity_count: room.amenity_count
+      amenity_count: room.amenity_count,
+      water: water_value
     }
   end
 end

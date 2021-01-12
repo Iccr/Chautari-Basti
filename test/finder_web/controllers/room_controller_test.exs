@@ -12,7 +12,7 @@ defmodule FinderWeb.RoomControllerTest do
     "long" => "85.3240",
     "number_of_rooms" => "1",
     "price" => "3000",
-    "water" => nil
+    "water" => 0
   }
 
   @update_attrs %{
@@ -22,7 +22,8 @@ defmodule FinderWeb.RoomControllerTest do
     "lat" => "27.7172",
     "long" => "85.3240",
     "number_of_rooms" => "1",
-    "price" => "3000"
+    "price" => "3000",
+    "water" => 2
   }
   @invalid_attrs %{
     "address" => nil,
@@ -31,7 +32,7 @@ defmodule FinderWeb.RoomControllerTest do
     "long" => nil,
     "number_of_rooms" => nil,
     "price" => "3000"
-  }
+   }
 
   def fixture(:room) do
     district = Finder.Districts.list_districts() |> Enum.at(0)
@@ -75,7 +76,8 @@ defmodule FinderWeb.RoomControllerTest do
                "number_of_rooms" => 1,
                "parking_count" => 0,
                "amenity_count" => 0,
-               "price" => "3000"
+               "price" => "3000",
+               "water" => "24/7"
              } = json_response(conn, 200)["data"]
     end
 
@@ -104,7 +106,8 @@ defmodule FinderWeb.RoomControllerTest do
                "number_of_rooms" => 1,
                "parking_count" => 1,
                "amenity_count" => 0,
-               "price" => "3000"
+               "price" => "3000",
+               "water" => "24/7"
              } = json_response(conn, 200)["data"]
     end
 
@@ -133,7 +136,8 @@ defmodule FinderWeb.RoomControllerTest do
                "number_of_rooms" => 1,
                "parking_count" => 0,
                "amenity_count" => 1,
-               "price" => "3000"
+               "price" => "3000",
+               "water" => "24/7"
              } = json_response(conn, 200)["data"]
     end
 
@@ -159,7 +163,8 @@ defmodule FinderWeb.RoomControllerTest do
                "lat" => "27.7172",
                "long" => "85.3240",
                "number_of_rooms" => 1,
-               "price" => "3000"
+               "price" => "3000",
+               "water" => "Enough for small family"
              } = json_response(conn, 200)["data"]
     end
 
