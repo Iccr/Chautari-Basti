@@ -173,5 +173,21 @@ defmodule Finder.RoomsTest do
       room = room_fixture()
       assert %Ecto.Changeset{} = Rooms.change_room(room)
     end
+
+    test "rooms water_types returns list of tuples as water types" do
+      result = Rooms.water_types()
+
+      assert result == [
+        %WaterTypes{name: "24/7", value: 0},
+        %WaterTypes{name: "Enough for small family", value: 1},
+        %WaterTypes{name: "Enough for small family", value: 2}
+      ]
+    end
+
+    test "rooms get_water_types_by_filter returns corrent water type as string when given valid integer" do
+      type = Rooms.water_types() |> Enum.at(0)
+      value = Rooms.get_water_type_by_id(type.value)
+      assert value.value == type.value
+    end
   end
 end

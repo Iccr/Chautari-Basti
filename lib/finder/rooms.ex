@@ -141,6 +141,14 @@ defmodule Finder.Rooms do
   end
 
   def water_types do
-    [{"24/7", 0}, {"Enough for small family", 1}, {"Enough for individuals", 2}]
+    [
+      %WaterTypes{name: "24/7", value: 0},
+      %WaterTypes{name: "Enough for small family", value: 1},
+      %WaterTypes{name: "Enough for small family", value: 2}
+    ]
+  end
+
+  def get_water_type_by_id(id) do
+    Enum.find(water_types(), &( &1.value == id))
   end
 end
