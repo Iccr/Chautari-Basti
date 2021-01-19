@@ -41,6 +41,6 @@ defmodule FinderWeb.SessionController do
   def show_user(conn, user) do
     conn
     |> put_view(FinderWeb.UserView)
-    |> render("user.json", user: user)
+    |> render("show.json", user: user)
   end
 end
