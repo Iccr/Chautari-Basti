@@ -8,10 +8,13 @@ defmodule FinderWeb.SessionController do
     user = get_user_with_email_token(user_params)
 
     if user do
-      show_user(conn, user)
+      with {:ok, token, _claims} <- sign(user) do
+        user = Map.put(user, :auth_token, token)
+        show_user(conn, user)
+      end
     else
       with {:ok, user} = Accounts.create_user(user_params),
-           {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+           {:ok, token, _claims} <- sign(user) do
         user = Map.put(user, :auth_token, token)
         show_user(conn, user)
       else
@@ -21,6 +24,10 @@ defmodule FinderWeb.SessionController do
           |> render("error.json", message: message)
       end
     end
+  end
+
+  def sign(user) do
+    Guardian.encode_and_sign(user)
   end
 
   def get_user_with_email_token(%{"email" => email, "token" => token}) do

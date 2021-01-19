@@ -6,6 +6,8 @@ defmodule FinderWeb.RoomController do
 
   action_fallback FinderWeb.FallbackController
 
+  plug Finder.Guardian.ProtectedPipeline when action in [:create, :update, :delete]
+
   def index(conn, _params) do
     rooms = Rooms.list_rooms()
     render(conn, "index.json", rooms: rooms)

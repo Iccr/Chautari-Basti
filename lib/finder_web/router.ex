@@ -3,6 +3,10 @@ defmodule FinderWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Finder.Guardian.AuthPipeline
+  end
+
+  pipeline :authenticated do
   end
 
   scope "/api/v1", FinderWeb do

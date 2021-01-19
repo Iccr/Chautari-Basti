@@ -11,7 +11,9 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("room.json", %{room: room}) do
-    water_value = Finder.Rooms.get_water_type_by_id(room.water).name
+    water = Finder.Rooms.get_water_type_by_id(room.water)
+    water_value = if is_nil(water), do: "", else: water.name
+
     %{
       id: room.id,
       lat: room.lat,
