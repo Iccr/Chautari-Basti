@@ -8,15 +8,17 @@ defmodule FinderWeb.UserControllerTest do
     email: "some email",
     imageurl: "some imageurl",
     name: "some name",
-    password_hash: "some password_hash"
+    token: "abcdefgh",
+    provider: "facebook"
   }
   @update_attrs %{
     email: "some updated email",
     imageurl: "some updated imageurl",
     name: "some updated name",
-    password_hash: "some updated password_hash"
+    token: "abcdefghij",
+    provider: "google"
   }
-  @invalid_attrs %{email: nil, imageurl: nil, name: nil, password_hash: nil}
+  @invalid_attrs %{email: nil, imageurl: nil, name: nil}
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -46,7 +48,8 @@ defmodule FinderWeb.UserControllerTest do
                "email" => "some email",
                "imageurl" => "some imageurl",
                "name" => "some name",
-               "password_hash" => "some password_hash"
+               "provider" => "facebook",
+               "token" => "abcdefgh"
              } = json_response(conn, 200)["data"]
     end
 
@@ -70,7 +73,8 @@ defmodule FinderWeb.UserControllerTest do
                "email" => "some updated email",
                "imageurl" => "some updated imageurl",
                "name" => "some updated name",
-               "password_hash" => "some updated password_hash"
+               "token" => "abcdefghij",
+               "provider" => "google"
              } = json_response(conn, 200)["data"]
     end
 

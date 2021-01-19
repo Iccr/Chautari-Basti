@@ -42,7 +42,9 @@ defmodule Finder.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:guardian, "~> 2.0"}
+      {:guardian, "~> 2.0"},
+      {:comeonin, "~> 5.3"},
+      {:bcrypt_elixir, "~> 2.3.0"}
     ]
   end
 

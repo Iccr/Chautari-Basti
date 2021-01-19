@@ -6,9 +6,21 @@ defmodule Finder.AccountsTest do
   describe "users" do
     alias Finder.Accounts.User
 
-    @valid_attrs %{email: "some email", imageurl: "some imageurl", name: "some name", password_hash: "some password_hash"}
-    @update_attrs %{email: "some updated email", imageurl: "some updated imageurl", name: "some updated name", password_hash: "some updated password_hash"}
-    @invalid_attrs %{email: nil, imageurl: nil, name: nil, password_hash: nil}
+    @valid_attrs %{
+      email: "some email",
+      imageurl: "some imageurl",
+      name: "some name",
+      token: "abcdefgh",
+      provider: "facebook"
+    }
+    @update_attrs %{
+      email: "some updated email",
+      imageurl: "some updated imageurl",
+      name: "some updated name",
+      token: "abcdefghij",
+      provider: "google"
+    }
+    @invalid_attrs %{email: nil, imageurl: nil, name: nil, token: nil, provider: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -34,7 +46,8 @@ defmodule Finder.AccountsTest do
       assert user.email == "some email"
       assert user.imageurl == "some imageurl"
       assert user.name == "some name"
-      assert user.password_hash == "some password_hash"
+      assert user.token == "abcdefgh"
+      assert user.provider == "facebook"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -47,7 +60,8 @@ defmodule Finder.AccountsTest do
       assert user.email == "some updated email"
       assert user.imageurl == "some updated imageurl"
       assert user.name == "some updated name"
-      assert user.password_hash == "some updated password_hash"
+      assert user.token == "abcdefghij"
+      assert user.provider == "google"
     end
 
     test "update_user/2 with invalid data returns error changeset" do

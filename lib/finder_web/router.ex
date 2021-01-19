@@ -6,12 +6,14 @@ defmodule FinderWeb.Router do
   end
 
   scope "/api/v1", FinderWeb do
-    pipe_through :api
+    pipe_through [:api]
     resources "/rooms", RoomController, except: [:new, :edit]
     resources "/districts", DistrictController, only: [:index, :show]
     resources "/amenities", AmenityController, only: [:index]
     resources "/waters", WaterController, only: [:index]
     resources "/parkings", ParkingController, only: [:index]
+    resources "/users", UserController, except: [:new, :edit]
+    post "/login", UserController, :create
   end
 
   # Enables LiveDashboard only for development
