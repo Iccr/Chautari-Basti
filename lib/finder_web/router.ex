@@ -13,7 +13,7 @@ defmodule FinderWeb.Router do
     resources "/waters", WaterController, only: [:index]
     resources "/parkings", ParkingController, only: [:index]
     resources "/users", UserController, except: [:new, :edit]
-    post "/login", UserController, :create
+    post "/login", SessionController, :login
   end
 
   # Enables LiveDashboard only for development

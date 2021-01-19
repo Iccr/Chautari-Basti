@@ -80,5 +80,33 @@ defmodule Finder.AccountsTest do
       user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
+
+    # test "find user with email returns a user with that email" do
+    #   user = user_fixture()
+    #   email = "some email"
+    #   result = Accounts.get_user_with_email(email)
+    #   assert user.email == result.email
+    # end
+
+    # test "find user with token returns a user with that token" do
+    #   user = user_fixture()
+    #   token = "abcdefgh"
+    #   result = Accounts.get_user_with_token(token)
+    #   assert user.token == result.token
+    # end
+
+    # test "find user with either token  or email" do
+    #   user = user_fixture()
+    #   result = Accounts.get_user_with_email_token(user.email, user.token)
+    #   assert user.email == result.email
+    #   assert user.token == result.token
+    # end
+
+    # test "finder user with token if email is not present" do
+    #   user = user_fixture()
+    #   result = Accounts.get_user_with_email_token(nil, user.token)
+
+    #   assert user.token == result.token
+    # end
   end
 end

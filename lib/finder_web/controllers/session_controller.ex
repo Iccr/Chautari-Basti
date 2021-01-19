@@ -1,22 +1,30 @@
-defmodule Finder.SessionController do
+defmodule FinderWeb.SessionController do
   use FinderWeb, :controller
+  alias Finder.Accounts
 
   def login(conn, %{"user" => user_params}) do
-    find_with_token(user_params)
+    user = get_user_with_email_token(user_params)
+
+    if user do
+      show_user(conn, user)
+    else
+      with {:ok, user} = Accounts.create_user(user_params) do
+        show_user(conn, user)
+      end
+    end
   end
 
-  # def create_user(conn, user_params) do
-  # with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-  #   conn
-  #   |> put_status(:created)
-  #   |> put_resp_header("location", Routes.user_path(conn, :show, user))
-  #   |> render("show.json", user: user)
-  # end
-  # end
-
-  def find_with_token(%{"token" => token}) do
+  def get_user_with_email_token(%{"email" => email, "token" => token}) do
+    Accounts.get_user_with_email_token(email, token)
   end
 
-  def find_with_email(%{"email" => email}) do
+  def get_user_with_email_token(%{"token" => token}) do
+    Accounts.get_user_with_email_token(nil, token)
+  end
+
+  def show_user(conn, user) do
+    conn
+    |> put_view(FinderWeb.UserView)
+    |> render("user.json", user: user)
   end
 end

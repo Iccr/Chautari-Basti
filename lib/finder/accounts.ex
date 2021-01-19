@@ -101,4 +101,15 @@ defmodule Finder.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_user_with_email_token(incoming_email, incoming_token) do
+    email = if is_nil(incoming_email), do: "", else: incoming_email
+    token = if is_nil(incoming_token), do: "", else: incoming_token
+
+    query = from user in User, where: user.email == ^email or user.token == ^token
+
+    query
+    |> Repo.all()
+    |> Enum.at(0)
+  end
 end
