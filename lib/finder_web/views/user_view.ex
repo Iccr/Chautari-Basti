@@ -17,7 +17,8 @@ defmodule FinderWeb.UserView do
       imageurl: user.imageurl,
       name: user.name,
       token: user.token,
-      provider: user.provider
+      provider: user.provider,
+      auth_token: user.auth_token
     }
   end
 end

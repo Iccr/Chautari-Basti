@@ -10,7 +10,7 @@ defmodule Finder.Accounts.User do
     field :name, :string
     field :token, :string
     field :provider, :string
-
+    field :auth_token, :string, virtual: true
     timestamps()
   end
 

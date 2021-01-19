@@ -2,14 +2,23 @@ defmodule FinderWeb.SessionController do
   use FinderWeb, :controller
   alias Finder.Accounts
 
+  alias Finder.Guardian
+
   def login(conn, %{"user" => user_params}) do
     user = get_user_with_email_token(user_params)
 
     if user do
       show_user(conn, user)
     else
-      with {:ok, user} = Accounts.create_user(user_params) do
+      with {:ok, user} = Accounts.create_user(user_params),
+           {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+        user = Map.put(user, :auth_token, token)
         show_user(conn, user)
+      else
+        {:error, message} ->
+          conn
+          |> put_view(FinderWeb.ErrorView)
+          |> render("error.json", message: message)
       end
     end
   end
