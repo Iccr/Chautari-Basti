@@ -7,16 +7,15 @@ services:
     finder:
         build: .
         restart: always
-        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && _build/prod/rel/finder/bin/finder start"
-        container_name: : finder_api
+        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && _build/prod/rel/finder/bin/finder eval 'Finder.Release.migrate' && echo 'this is cool' && _build/prod/rel/finder/bin/finder start"
+        container_name: finder_api
         depends_on:
           - db
-        environment: :
-        DATABASE_URL: postgres://deploy:P@ssword@db:5432/finder
-        SECRET_KEY_BASE: GYjWGHDHDe3Ob+Qivj7NBPP+8FU429wAJrVl9XWM78lXLpZ/2HcTKuc5BJ+hPvpq
-
+        environment: 
+          DATABASE_URL:  ecto://deploy:P@ssword@db/finder
+          SECRET_KEY_BASE: GYjWGHDHDe3Ob+Qivj7NBPP+8FU429wAJrVl9XWM78lXLpZ/2HcTKuc5BJ+hPvpq
         ports:
-          - 5000:5000
+          - 4000:4000
         networks:
           - chautari
         # volumes:
@@ -27,10 +26,10 @@ services:
         image: postgres:13.1
         ports:
         - 5432:5432
-        container_name: : finder_db
+        container_name: finder_db
         networks:
           - chautari
-        environment: :
+        environment: 
            POSTGRES_USER: deploy
            POSTGRES_PASSWORD: P@ssword
            POSTGRES_DB: finder
@@ -46,7 +45,7 @@ services:
       image: adminer
       restart: always
       hostname: finder-database-server
-      cochautariainer_name: finder_adminer
+      container_name: finder_adminer
       networks:
         - chautari
       ports:

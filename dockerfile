@@ -17,4 +17,6 @@ RUN  mix deps.get --only prod
 Run MIX_ENV=prod mix compile
 Run MIX_ENV=prod mix release
 
-# CMD ["_build/prod/rel/finder/bin/finder", "start"]
+
+CMD ["_build/prod/rel/finder/bin/finder", "start"]
+
