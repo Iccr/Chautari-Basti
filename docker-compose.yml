@@ -1,0 +1,52 @@
+version: '3.5'
+networks:
+  chautari:
+    name: backend_chautari
+
+services:
+    finder:
+        build: .
+        restart: always
+        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && npm start"
+        container_name: : finder_api
+        depends_on:
+          - db
+        environment: :
+        DATABASE_URL: postgres://deploy:P@ssword@db:5432/finder
+
+        ports:
+          - 5000:5000
+        networks:
+          - chautari
+        # volumes:
+          # - /opt/finder/uploads:/live/finder/uploads
+
+    db:
+        restart: always
+        image: postgres
+        ports:
+        - 5432:5432
+        container_name: : finder_db
+        networks:
+          - chautari
+        environment: :
+           POSTGRES_USER: deploy
+           POSTGRES_PASSWORD: P@ssword
+           POSTGRES_DB: finder
+           POSTGRES_HOSTNAME: localhost
+           POSTGRES_POOLSIZE: 10
+        # volumes:
+          # - /tmp/.s.PGSQL.5432:/var/run/postgresql/.s.PGSQL.5432
+        # volumes:
+        #   - /opt/roomfinder/mysql_dump:/docker-echautarirypoichautari-initdb.d
+        #   - /opt/roomfinder/mysql:/var/lib/mysql
+
+    adminer:
+      image: adminer
+      restart: always
+      hostname: finder-database-server
+      cochautariainer_name: finder_adminer
+      networks:
+        - chautari
+      ports:
+        - 8080:8080
