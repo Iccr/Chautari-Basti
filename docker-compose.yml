@@ -13,6 +13,7 @@ services:
           - db
         environment: :
         DATABASE_URL: postgres://deploy:P@ssword@db:5432/finder
+        SECRET_KEY_BASE: GYjWGHDHDe3Ob+Qivj7NBPP+8FU429wAJrVl9XWM78lXLpZ/2HcTKuc5BJ+hPvpq
 
         ports:
           - 5000:5000
