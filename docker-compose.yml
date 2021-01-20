@@ -7,7 +7,7 @@ services:
     finder:
         build: .
         restart: always
-        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && npm start"
+        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && _build/prod/rel/finder/bin/finder start"
         container_name: : finder_api
         depends_on:
           - db
@@ -23,7 +23,7 @@ services:
 
     db:
         restart: always
-        image: postgres
+        image: postgres:13.1
         ports:
         - 5432:5432
         container_name: : finder_db
