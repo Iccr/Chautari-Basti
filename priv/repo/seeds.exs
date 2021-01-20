@@ -17,7 +17,7 @@ defmodule Seed do
     tags = ~w(1 2 3)
 
     for {n, t} <- Enum.zip(names, tags) do
-      Finder.Parkings.create_parking(%{name: n, tag: t})
+      val = Finder.Parkings.create_parking(%{name: n, tag: t})
     end
   end
 

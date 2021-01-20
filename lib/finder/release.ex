@@ -14,6 +14,23 @@ defmodule Finder.Release do
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
+  def seed() do
+    load_app()
+
+    filename = Application.app_dir(:finder, "priv/repo/seeds.exs")
+
+    for repo <- repos() do
+      {:ok, _, _} =
+        Ecto.Migrator.with_repo(repo, fn _repo ->
+          if File.regular?(filename) do
+            {:ok, Code.eval_file(filename)}
+          else
+            {:error, "Seeds file not found."}
+          end
+        end)
+    end
+  end
+
   defp repos do
     Application.fetch_env!(@app, :ecto_repos)
   end

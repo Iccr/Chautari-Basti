@@ -7,13 +7,20 @@ services:
     finder:
         build: .
         restart: always
-        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && _build/prod/rel/finder/bin/finder eval 'Finder.Release.migrate' && echo 'this is cool' && _build/prod/rel/finder/bin/finder start"
+        command: bash -c "/usr/wait-for-it.sh --timeout=0 db:5432 && _build/prod/rel/finder/bin/finder eval 'Finder.Release.migrate' && _build/prod/rel/finder/bin/finder eval 'Finder.Release.seed' && _build/prod/rel/finder/bin/finder start"
         container_name: finder_api
         depends_on:
           - db
         environment: 
           DATABASE_URL:  ecto://deploy:P@ssword@db/finder
           SECRET_KEY_BASE: GYjWGHDHDe3Ob+Qivj7NBPP+8FU429wAJrVl9XWM78lXLpZ/2HcTKuc5BJ+hPvpq
+
+          DATABASE_HOST: db
+          USER: deploy
+          PASSWORD: P@ssword
+          DATABASE: finder_dev
+          DIALECT: 'postgres'
+          PORT: 4000
         ports:
           - 4000:4000
         networks:

@@ -2,9 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :finder, Finder.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "finder_dev",
+  username: "deploy",
+  password: "P@ssword",
+  database: "finder",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
