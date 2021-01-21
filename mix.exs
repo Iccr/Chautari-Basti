@@ -44,7 +44,8 @@ defmodule Finder.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 2.0"},
       {:comeonin, "~> 5.3"},
-      {:bcrypt_elixir, "~> 2.3.0"}
+      {:bcrypt_elixir, "~> 2.3.0"},
+      {:httpoison, "~> 1.8"}
     ]
   end
 

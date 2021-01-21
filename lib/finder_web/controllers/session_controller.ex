@@ -13,17 +13,51 @@ defmodule FinderWeb.SessionController do
         show_user(conn, user)
       end
     else
-      with {:ok, user} = Accounts.create_user(user_params),
-           {:ok, token, _claims} <- sign(user) do
-        user = Map.put(user, :auth_token, token)
-        show_user(conn, user)
-      else
+      case verify_token(user_params) do
+        {:ok, name} ->
+          user_params = Map.put(user_params, "name", name)
+
+          with {:ok, user} = Accounts.create_user(user_params),
+               {:ok, token, _claims} <- sign(user) do
+            user = Map.put(user, :auth_token, token)
+            show_user(conn, user)
+          else
+            {:error, message} ->
+              show_error(conn, message)
+          end
+
         {:error, message} ->
-          conn
-          |> put_view(FinderWeb.ErrorView)
-          |> render("error.json", message: message)
+          show_error(conn, message)
       end
     end
+  end
+
+  def verify_token(attrs) do
+    token = attrs["token"]
+    url = "https://graph.facebook.com/me?access_token=" <> token
+
+    result =
+      Task.async(fn -> HTTPoison.get(url) end)
+      |> Task.await()
+      |> Jason.decode()
+
+    case result do
+      {:ok, %{"error" => %{"message" => message}}} ->
+        {:error, message}
+
+      {:ok, %{"name" => name}} ->
+        {:ok, name}
+
+      {:error, _} ->
+        IO.puts("error")
+        {:error, "not allowed"}
+    end
+  end
+
+  def show_error(conn, message) do
+    conn
+    |> put_view(FinderWeb.ErrorView)
+    |> render("error.json", message: message)
   end
 
   def sign(user) do
