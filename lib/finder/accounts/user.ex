@@ -3,6 +3,7 @@ defmodule Finder.Accounts.User do
   import Ecto.Changeset
 
   @attrs ~w(email imageurl name token provider)a
+  @required ~w(email token provider)a
 
   schema "users" do
     field :email, :string
@@ -18,7 +19,7 @@ defmodule Finder.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, @attrs)
-    |> validate_required(@attrs)
+    |> validate_required(@required)
     |> unique_constraint(:email)
   end
 end
