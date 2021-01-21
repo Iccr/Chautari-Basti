@@ -49,7 +49,6 @@ defmodule FinderWeb.SessionController do
         {:ok, name}
 
       {:error, _} ->
-        IO.puts("error")
         {:error, "not allowed"}
     end
   end
