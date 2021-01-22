@@ -18,6 +18,7 @@ defmodule FinderWeb.Router do
     resources "/parkings", ParkingController, only: [:index]
     resources "/users", UserController, except: [:new, :edit]
     post "/login", SessionController, :login
+    post "/appinfo", AppinfoController, :index
   end
 
   # Enables LiveDashboard only for development

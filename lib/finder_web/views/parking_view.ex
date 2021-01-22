@@ -11,8 +11,6 @@ defmodule FinderWeb.ParkingView do
   end
 
   def render("parking.json", %{parking: parking}) do
-    %{id: parking.id,
-      name: parking.name,
-      tag: parking.tag}
+    %{id: parking.id, name: parking.name, tag: parking.tag}
   end
 end
