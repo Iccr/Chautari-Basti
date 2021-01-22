@@ -13,14 +13,20 @@ defmodule FinderWeb.SessionController do
         show_user(conn, user)
       end
     else
-        with {:ok, user} = Accounts.create_user(user_params),
-             {:ok, token, _claims} <- sign(user) do
+      result = Accounts.create_user(user_params)
+
+      case result do
+        {:ok, user} ->
+          {:ok, token, _claims} = sign(user)
           user = Map.put(user, :auth_token, token)
           show_user(conn, user)
-        else
-          {:error, message} ->
-            show_error(conn, message)
-        end
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> put_view(FinderWeb.ChangesetView)
+          |> render("error.json", changeset: changeset)
+      end
     end
   end
 
