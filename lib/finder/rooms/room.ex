@@ -20,28 +20,36 @@ defmodule Finder.Rooms.Room do
     belongs_to :district, Finder.Districts.District
     many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
     many_to_many :amenities, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
+    has_many :images, Finder.Images.Image
 
     timestamps()
   end
 
   @doc false
+
   def changeset(room, attrs) do
     room
     |> cast(attrs, @permit_fields)
     |> validate_required(@required_fields)
-  end
-
-  def create_changeset(room, attrs) do
-    room
-    |> cast(attrs, @permit_fields)
-    |> validate_required(@required_fields)
     |> validate_presence_of_district(attrs)
+    |> validate_required_image_association(attrs)
+    |> validate_length(:images, min: 1)
   end
 
   def validate_presence_of_district(changeset, attrs) do
     case attrs["district"] do
       nil ->
         add_error(changeset, :district, "district must be present")
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp validate_required_image_association(changeset, attrs) do
+    case attrs["images"] do
+      nil ->
+        add_error(changeset, :images, "Please add at least one image")
 
       _ ->
         changeset

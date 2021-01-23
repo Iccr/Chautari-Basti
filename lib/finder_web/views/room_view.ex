@@ -13,6 +13,8 @@ defmodule FinderWeb.RoomView do
   def render("room.json", %{room: room}) do
     water = Finder.Rooms.get_water_type_by_id(room.water)
     water_value = if is_nil(water), do: "", else: water.name
+    require IEx
+    IEx.pry()
 
     %{
       id: room.id,
@@ -26,7 +28,24 @@ defmodule FinderWeb.RoomView do
       available: room.available,
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
-      water: water_value
+      water: water_value,
+      images: get_room_images(room.images)
     }
+  end
+
+  def get_room_images(images) do
+    Enum.map(images, fn e -> get_url(e.image) end)
+  end
+
+  def get_url(image) do
+    url = Finder.ImageUploader.url(image)
+
+    case url do
+      nil ->
+        ""
+
+      _ ->
+        FinderWeb.Endpoint.url() <> "/" <> url
+    end
   end
 end

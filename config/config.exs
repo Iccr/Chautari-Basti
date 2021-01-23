@@ -33,3 +33,7 @@ import_config "#{Mix.env()}.exs"
 config :finder, Finder.Guardian,
   issuer: "finder",
   secret_key: "mrZTowKXaSvY6QgWHkFxeXXNWnF4ptzQex8COj4zqWnA0dogSR98oCX8/3u/wDj+"
+
+config :arc,
+  storage: Arc.Storage.Local,
+  storage_dir: "uploads"

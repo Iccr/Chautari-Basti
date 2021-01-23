@@ -10,6 +10,7 @@ defmodule Finder.Rooms do
   alias Finder.Districts.District
   alias Finder.Parkings
   alias Finder.Amenities
+  alias Finder.Images.Image
 
   @doc """
   Returns the list of rooms.
@@ -55,7 +56,7 @@ defmodule Finder.Rooms do
 
   """
   def create_room(attrs \\ %{}) do
-    changeset = Room.create_changeset(%Room{}, attrs)
+    changeset = Room.changeset(%Room{}, attrs)
 
     case changeset do
       %Ecto.Changeset{valid?: false} ->
@@ -68,15 +69,39 @@ defmodule Finder.Rooms do
         parkings = Parkings.get_parkings(attrs["parkings"])
         amenities = Amenities.get_amenities(attrs["amenities"])
 
-        changeset
-        |> put_assoc(:amenities, amenities)
-        |> add_amenities_changes(amenities)
-        |> put_assoc(:parkings, parkings)
-        |> add_parking_changes(parkings)
-        |> put_assoc(:district, district)
-        |> add_district_changes(district)
-        |> Repo.insert()
+        {:ok, room} =
+          changeset
+          |> put_assoc(:amenities, amenities)
+          |> add_amenities_changes(amenities)
+          |> put_assoc(:parkings, parkings)
+          |> add_parking_changes(parkings)
+          |> put_assoc(:district, district)
+          |> add_district_changes(district)
+          |> Repo.insert()
+
+        image_params = attrs["images"]
+        IO.inspect(image_params)
+
+        associates =
+          Enum.map(image_params, fn room_image ->
+            image_changeset = Image.changeset(%Image{}, %{image: room_image})
+            put_assoc(image_changeset, :room, room)
+          end)
+
+        insert_image(associates)
+        room = Repo.preload(room, :images)
+
+        {:ok, room}
     end
+  end
+
+  def insert_image([head | tail]) do
+    Repo.insert(head)
+    insert_image(tail)
+  end
+
+  def insert_image([]) do
+    []
   end
 
   defp add_amenities_changes(changeset, amenities) do
@@ -149,6 +174,6 @@ defmodule Finder.Rooms do
   end
 
   def get_water_type_by_id(id) do
-    Enum.find(water_types(), &( &1.value == id))
+    Enum.find(water_types(), &(&1.value == id))
   end
 end

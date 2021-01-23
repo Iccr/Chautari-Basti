@@ -14,6 +14,8 @@ defmodule FinderWeb.RoomController do
   end
 
   def create(conn, %{"room" => room_params}) do
+    IO.puts("@@@@@@@@@@@@@")
+
     with {:ok, %Room{} = room} <- Rooms.create_room(room_params) do
       conn
       |> put_status(:created)
