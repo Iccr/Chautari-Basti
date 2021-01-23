@@ -26,4 +26,8 @@ defmodule FinderWeb.DistrictView do
   defp render_rooms(rooms) do
     render_many(rooms, FinderWeb.RoomView, "room.json")
   end
+
+  defp render_rooms(nil) do
+    render_many([], FinderWeb.RoomView, "room.json")
+  end
 end

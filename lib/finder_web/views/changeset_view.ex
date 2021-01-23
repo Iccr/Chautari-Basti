@@ -14,6 +14,12 @@ defmodule FinderWeb.ChangesetView do
   def render("error.json", %{changeset: changeset}) do
     # When encoded, the changeset returns its errors
     # as a JSON object. So we just pass it forward.
-    %{errors: translate_errors(changeset)}
+    errors =
+      Enum.map(changeset.errors, fn x ->
+        {name, {val, _}} = x
+        %{"name" => name, "value" => val}
+      end)
+
+    %{errors: errors}
   end
 end

@@ -45,7 +45,9 @@ defmodule Finder.MixProject do
       {:guardian, "~> 2.0"},
       {:comeonin, "~> 5.3"},
       {:bcrypt_elixir, "~> 2.3.0"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.3"}
     ]
   end
 

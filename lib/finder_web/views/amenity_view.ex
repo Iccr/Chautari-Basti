@@ -11,8 +11,6 @@ defmodule FinderWeb.AmenityView do
   end
 
   def render("amenity.json", %{amenity: amenity}) do
-    %{id: amenity.id,
-      name: amenity.name,
-      tag: amenity.tag}
+    %{id: amenity.id, name: amenity.name, tag: amenity.tag}
   end
 end
