@@ -13,8 +13,6 @@ defmodule FinderWeb.RoomView do
   def render("room.json", %{room: room}) do
     water = Finder.Rooms.get_water_type_by_id(room.water)
     water_value = if is_nil(water), do: "", else: water.name
-    require IEx
-    IEx.pry()
 
     %{
       id: room.id,
