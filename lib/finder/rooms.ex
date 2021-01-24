@@ -7,11 +7,11 @@ defmodule Finder.Rooms do
   alias Finder.Repo
 
   alias Finder.Rooms.Room
-  alias Finder.Districts.District
   alias Finder.Parkings
   alias Finder.Amenities
   alias Finder.Images.Image
 
+  @spec list_rooms :: nil | [%{optional(atom) => any}] | %{optional(atom) => any}
   @doc """
   Returns the list of rooms.
 
@@ -42,6 +42,11 @@ defmodule Finder.Rooms do
   def get_room!(id), do: Repo.get!(Room, id)
 
   def get_room(id), do: Repo.get(Room, id)
+
+  def get_preloaded_room_with(id) do
+    get_room(id)
+    |> Repo.preload([:amenities, :parkings, :images, :district])
+  end
 
   @doc """
   Creates a room.
@@ -89,10 +94,14 @@ defmodule Finder.Rooms do
           end)
 
         insert_image(associates)
-        room = Repo.preload(room, :images)
+        room = load_images(room)
 
         {:ok, room}
     end
+  end
+
+  def load_images(room) do
+    Repo.preload(room, :images)
   end
 
   def insert_image([head | tail]) do
@@ -131,9 +140,42 @@ defmodule Finder.Rooms do
 
   """
   def update_room(%Room{} = room, attrs) do
-    room
-    |> Room.changeset(attrs)
-    |> Repo.update()
+    changeset = Room.changeset(room, attrs)
+
+    case changeset do
+      %Ecto.Changeset{valid?: false} ->
+        changeset
+        |> apply_action(:insert)
+
+      _ ->
+        parkings = Parkings.get_parkings(attrs["parkings"])
+        amenities = Amenities.get_amenities(attrs["amenities"])
+
+        {:ok, room} =
+          changeset
+          |> put_assoc(:amenities, amenities)
+          |> add_amenities_changes(amenities)
+          |> put_assoc(:parkings, parkings)
+          |> add_parking_changes(parkings)
+          |> Repo.update()
+
+        image_params = attrs["images"]
+
+        images = room.images
+        IO.inspect(room.images)
+        Repo.delete_all(Image, images)
+
+        associates =
+          Enum.map(image_params, fn room_image ->
+            image_changeset = Image.changeset(%Image{}, %{image: room_image})
+            put_assoc(image_changeset, :room, room)
+          end)
+
+        insert_image(associates)
+        room = load_images(room)
+
+        {:ok, room}
+    end
   end
 
   @doc """
