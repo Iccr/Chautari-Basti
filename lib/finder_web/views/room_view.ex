@@ -43,7 +43,7 @@ defmodule FinderWeb.RoomView do
         ""
 
       _ ->
-        FinderWeb.Endpoint.url() <> "/" <> url
+        url
     end
   end
 end

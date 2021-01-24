@@ -85,7 +85,6 @@ defmodule Finder.Rooms do
           |> Repo.insert()
 
         image_params = attrs["images"]
-        IO.inspect(image_params)
 
         associates =
           Enum.map(image_params, fn room_image ->
@@ -140,6 +139,8 @@ defmodule Finder.Rooms do
 
   """
   def update_room(%Room{} = room, attrs) do
+    attrs = capitalize_address(attrs)
+    IO.inspect(attrs)
     changeset = Room.changeset(room, attrs)
 
     case changeset do
@@ -162,7 +163,6 @@ defmodule Finder.Rooms do
         image_params = attrs["images"]
 
         images = room.images
-        IO.inspect(room.images)
         Repo.delete_all(Image, images)
 
         associates =
@@ -175,6 +175,19 @@ defmodule Finder.Rooms do
         room = load_images(room)
 
         {:ok, room}
+    end
+  end
+
+  def capitalize_address(attrs) do
+    address = attrs["address"]
+
+    case address do
+      nil ->
+        attrs
+
+      result ->
+        new_address = result |> String.trim() |> String.capitalize()
+        Map.put(attrs, "address", new_address)
     end
   end
 
