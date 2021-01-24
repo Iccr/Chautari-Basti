@@ -1,6 +1,7 @@
 defmodule FinderWeb.RoomView do
   use FinderWeb, :view
   alias FinderWeb.RoomView
+  use Timex
 
   def render("index.json", %{rooms: rooms}) do
     %{data: render_many(rooms, RoomView, "room.json")}
@@ -27,7 +28,8 @@ defmodule FinderWeb.RoomView do
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
       water: water_value,
-      images: get_room_images(room.images)
+      images: get_room_images(room.images),
+      posted_on: get_posted_time_in_ago(room)
     }
   end
 
@@ -45,5 +47,9 @@ defmodule FinderWeb.RoomView do
       _ ->
         url
     end
+  end
+
+  def get_posted_time_in_ago(room) do
+    Timex.from_now(room.inserted_at)
   end
 end

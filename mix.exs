@@ -47,7 +47,8 @@ defmodule Finder.MixProject do
       {:bcrypt_elixir, "~> 2.3.0"},
       {:httpoison, "~> 1.8"},
       {:arc, "~> 0.11.0"},
-      {:arc_ecto, "~> 0.11.3"}
+      {:arc_ecto, "~> 0.11.3"},
+      {:timex, "~> 3.6"}
     ]
   end
 
