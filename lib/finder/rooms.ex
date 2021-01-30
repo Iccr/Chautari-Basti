@@ -162,8 +162,9 @@ defmodule Finder.Rooms do
 
         image_params = attrs["images"]
 
-        images = room.images
-        Repo.delete_all(Image, images)
+        images_ids = room.images |> Enum.map(fn e -> e.id end)
+        query = from i in Image, where: i.id in ^images_ids
+        Repo.delete_all(query)
 
         associates =
           Enum.map(image_params, fn room_image ->
