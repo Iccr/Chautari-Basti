@@ -22,7 +22,11 @@ defmodule Finder.Rooms do
 
   """
   def list_rooms do
-    Repo.all(Room) |> Repo.preload(:images)
+    # Post |> order_by(constraint) |> Repo.all()
+    Room
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+    |> Repo.preload(:images)
   end
 
   @doc """
@@ -86,9 +90,13 @@ defmodule Finder.Rooms do
 
         image_params = attrs["images"]
 
+        IO.inspect(image_params)
+
         associates =
           Enum.map(image_params, fn room_image ->
             image_changeset = Image.changeset(%Image{}, %{image: room_image})
+            IO.puts("image_changeset")
+            IO.inspect(image_changeset)
             put_assoc(image_changeset, :room, room)
           end)
 

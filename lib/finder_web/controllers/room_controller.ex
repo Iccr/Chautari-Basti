@@ -13,7 +13,7 @@ defmodule FinderWeb.RoomController do
     render(conn, "index.json", rooms: rooms)
   end
 
-  def create(conn, %{"room" => room_params}) do
+  def create(conn, room_params) do
     with {:ok, %Room{} = room} <- Rooms.create_room(room_params) do
       conn
       |> put_status(:created)
@@ -32,7 +32,7 @@ defmodule FinderWeb.RoomController do
     end
   end
 
-  def update(conn, %{"id" => id, "room" => room_params}) do
+  def update(conn, %{"id" => id} = room_params) do
     case Rooms.get_preloaded_room_with(id) do
       nil ->
         {:error, :not_found}
