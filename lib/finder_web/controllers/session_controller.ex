@@ -42,7 +42,6 @@ defmodule FinderWeb.SessionController do
   #     |> Task.await()
   #
   #   jsn = Jason.decode(response.body)
-  #   IO.inspect(jsn)
   #
   #   case jsn do
   #     {:ok, %{"error" => %{"message" => message}}} ->

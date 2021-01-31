@@ -112,4 +112,9 @@ defmodule Finder.Accounts do
     |> Repo.all()
     |> Enum.at(0)
   end
+
+  def load_my_rooms(current_user) do
+    current_user
+    |> Repo.preload(:rooms)
+  end
 end

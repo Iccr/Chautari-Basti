@@ -7,6 +7,7 @@ defmodule FinderWeb.RoomController do
   action_fallback FinderWeb.FallbackController
 
   plug Finder.Guardian.ProtectedPipeline when action in [:create, :update, :delete]
+  plug Finder.Plugs.CurrentUser when action in [:create, :update, :delete]
 
   def index(conn, _params) do
     rooms = Rooms.list_rooms()
@@ -14,7 +15,9 @@ defmodule FinderWeb.RoomController do
   end
 
   def create(conn, room_params) do
-    with {:ok, %Room{} = room} <- Rooms.create_room(room_params) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, %Room{} = room} <- Rooms.create_room(room_params, current_user) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.room_path(conn, :show, room))

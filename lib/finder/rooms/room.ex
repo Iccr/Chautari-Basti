@@ -18,6 +18,7 @@ defmodule Finder.Rooms.Room do
     field :amenity_count, :integer
     field :water, :integer
     belongs_to :district, Finder.Districts.District
+    belongs_to :user, Finder.Accounts.User
     many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
     many_to_many :amenities, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
     has_many :images, Finder.Images.Image

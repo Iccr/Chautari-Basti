@@ -10,6 +10,10 @@ defmodule FinderWeb.UserView do
     %{data: render_one(user, UserView, "user.json")}
   end
 
+  def render("user_with_rooms.json", %{user: user}) do
+    %{data: render_many(user.rooms, FinderWeb.RoomView, "room.json")}
+  end
+
   def render("user.json", %{user: user}) do
     %{
       id: user.id,

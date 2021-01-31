@@ -12,6 +12,7 @@ defmodule Finder.Accounts.User do
     field :token, :string
     field :provider, :string
     field :auth_token, :string, virtual: true
+    has_many :rooms, Finder.Rooms.Room
     timestamps()
   end
 

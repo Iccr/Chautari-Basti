@@ -12,13 +12,11 @@ defmodule FinderWeb.UserController do
   end
 
   def my_rooms(conn, _params) do
-    IO.inspect(conn)
     current_user = conn.assigns.current_user
-    rooms = current_user.rooms
+    user_with_rooms = Accounts.load_my_rooms(current_user)
 
     conn
-    |> put_layout(FinderWeb.RoomView)
-    |> render("index.json", rooms: rooms)
+    |> render("user_with_rooms.json", user: user_with_rooms)
   end
 
   def create(conn, %{"user" => user_params}) do

@@ -64,7 +64,7 @@ defmodule Finder.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_room(attrs \\ %{}) do
+  def create_room(attrs \\ %{}, current_user) do
     changeset = Room.changeset(%Room{}, attrs)
 
     case changeset do
@@ -85,18 +85,15 @@ defmodule Finder.Rooms do
           |> put_assoc(:parkings, parkings)
           |> add_parking_changes(parkings)
           |> put_assoc(:district, district)
+          |> put_assoc(:user, current_user)
           |> add_district_changes(district)
           |> Repo.insert()
 
         image_params = attrs["images"]
 
-        IO.inspect(image_params)
-
         associates =
           Enum.map(image_params, fn room_image ->
             image_changeset = Image.changeset(%Image{}, %{image: room_image})
-            IO.puts("image_changeset")
-            IO.inspect(image_changeset)
             put_assoc(image_changeset, :room, room)
           end)
 
@@ -148,7 +145,6 @@ defmodule Finder.Rooms do
   """
   def update_room(%Room{} = room, attrs) do
     attrs = capitalize_address(attrs)
-    IO.inspect(attrs)
     changeset = Room.changeset(room, attrs)
 
     case changeset do
