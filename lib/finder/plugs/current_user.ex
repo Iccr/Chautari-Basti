@@ -9,6 +9,7 @@ defmodule Finder.Plugs.CurrentUser do
         Plug.Conn.assign(conn, :current_user, user)
 
       {:error, _reason} ->
+        IO.puts("ioioioio")
         conn
     end
   end

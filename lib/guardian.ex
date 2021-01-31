@@ -12,9 +12,15 @@ defmodule Finder.Guardian do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    resource = Finder.Accounts.get_user!(id)
+    IO.inspect("comming")
 
-    {:ok, resource}
+    try do
+      resource = Finder.Accounts.get_user!(id)
+      {:ok, resource}
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def resource_from_claims(_claims) do

@@ -10,6 +10,7 @@ defmodule FinderWeb.Router do
     plug :accepts, ["json"]
     plug Finder.Guardian.AuthPipeline
     plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
     plug Finder.Plugs.CurrentUser
   end
 
