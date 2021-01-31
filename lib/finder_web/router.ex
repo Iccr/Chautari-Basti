@@ -7,6 +7,10 @@ defmodule FinderWeb.Router do
   end
 
   pipeline :authenticated do
+    plug :accepts, ["json"]
+    plug Finder.Guardian.AuthPipeline
+    plug Guardian.Plug.VerifyHeader
+    plug Finder.Plugs.CurrentUser
   end
 
   scope "/api/v1", FinderWeb do
@@ -19,6 +23,9 @@ defmodule FinderWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     post "/login", SessionController, :login
     post "/appinfo", AppinfoController, :index
+
+    pipe_through [:authenticated]
+    get "/my_rooms", UserController, :my_rooms
   end
 
   # Enables LiveDashboard only for development

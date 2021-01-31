@@ -13,6 +13,7 @@ defmodule Finder.Guardian do
   def resource_from_claims(claims) do
     id = claims["sub"]
     resource = Finder.Accounts.get_user!(id)
+
     {:ok, resource}
   end
 
