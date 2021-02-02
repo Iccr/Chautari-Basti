@@ -26,11 +26,12 @@ defmodule FinderWeb.RoomController do
   end
 
   def show(conn, %{"id" => id}) do
-    case Rooms.get_room(id) do
+    case Rooms.get_preloaded_room_with(id) do
       nil ->
         {:error, :not_found}
 
       room ->
+        IO.inspect(room)
         render(conn, "show.json", room: room)
     end
   end

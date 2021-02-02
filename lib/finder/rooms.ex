@@ -49,7 +49,7 @@ defmodule Finder.Rooms do
 
   def get_preloaded_room_with(id) do
     get_room(id)
-    |> Repo.preload([:amenities, :parkings, :images, :district])
+    |> Repo.preload([:amenities, :parkings, :images, :district, :user])
   end
 
   @doc """
