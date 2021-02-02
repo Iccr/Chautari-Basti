@@ -11,12 +11,14 @@ defmodule FinderWeb.AppinfoController do
     districts = Districts.list_districts()
 
     waters = Rooms.water_types()
+    types = Rooms.room_types()
 
     render(conn, "index.json",
       amenities: amenities,
       parkings: parkings,
       districts: districts,
-      waters: waters
+      waters: waters,
+      types: types
     )
   end
 end

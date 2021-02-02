@@ -234,6 +234,18 @@ defmodule Finder.Rooms do
     ]
   end
 
+  def room_types do
+    [
+      %RoomTypes{name: "Appartment", value: 0},
+      %RoomTypes{name: "Room", value: 1},
+      %RoomTypes{name: "Flat", value: 2},
+      %RoomTypes{name: "Hostel", value: 3},
+      %RoomTypes{name: "Shutter", value: 4},
+      %RoomTypes{name: "Office", value: 5},
+      %RoomTypes{name: "Commercial", value: 5}
+    ]
+  end
+
   def get_water_type_by_id(id) do
     Enum.find(water_types(), &(&1.value == id))
   end
