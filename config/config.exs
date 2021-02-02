@@ -37,3 +37,5 @@ config :finder, Finder.Guardian,
 config :arc,
   storage: Arc.Storage.Local,
   storage_dir: "uploads"
+
+config :finder, Finder.Repo, start_apps_before_migration: [:logger]
