@@ -2,8 +2,8 @@ defmodule Finder.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @permit_fields ~w(lat long address number_of_rooms price state district_name available water)a
-  @required_fields ~w(lat long address number_of_rooms price  available water)a
+  @permit_fields ~w(lat long address number_of_rooms price state district_name available water type phone phone_visibility)a
+  @required_fields ~w(lat long address number_of_rooms price  available water type)a
 
   schema "rooms" do
     field :address, :string
@@ -18,6 +18,9 @@ defmodule Finder.Rooms.Room do
     field :amenity_count, :integer
     field :water, :integer
     field :type, :integer
+    field :phone, :string
+    field :phone_visibility, :boolean
+
     belongs_to :district, Finder.Districts.District
     belongs_to :user, Finder.Accounts.User
     many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking

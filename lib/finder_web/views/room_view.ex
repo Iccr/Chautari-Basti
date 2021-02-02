@@ -8,12 +8,22 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("show.json", %{room: room}) do
+    %{data: render_one(room, RoomView, "room.json")}
+  end
+
+  def render("show_detail.json", %{room: room}) do
     %{data: render_one(room, RoomView, "room_detail.json")}
   end
 
   def render("room.json", %{room: room}) do
     water = Finder.Rooms.get_water_type_by_id(room.water)
     water_value = if is_nil(water), do: "", else: water.name
+    type = Finder.Rooms.get_room_type_by_id(room.type)
+    type_value = if is_nil(type), do: "", else: type.name
+
+    # field :type, :integer
+    # field :phone, :string
+    # field :phone_visibility, :boolean
 
     %{
       id: room.id,
@@ -28,6 +38,9 @@ defmodule FinderWeb.RoomView do
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
       water: water_value,
+      type: type_value,
+      phone: room.phone,
+      phone_visibility: room.phone_visibility,
       images: get_room_images(room.images),
       posted_on: get_posted_time_in_ago(room)
     }

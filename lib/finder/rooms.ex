@@ -52,6 +52,11 @@ defmodule Finder.Rooms do
     |> Repo.preload([:amenities, :parkings, :images, :district, :user])
   end
 
+  def get_image_preloaded_room_with(id) do
+    get_room(id)
+    |> Repo.preload([:images])
+  end
+
   @doc """
   Creates a room.
 
@@ -99,7 +104,7 @@ defmodule Finder.Rooms do
           end)
 
         insert_image(associates)
-        room = load_images(room)
+        room = get_image_preloaded_room_with(room.id)
 
         {:ok, room}
     end
@@ -248,5 +253,9 @@ defmodule Finder.Rooms do
 
   def get_water_type_by_id(id) do
     Enum.find(water_types(), &(&1.value == id))
+  end
+
+  def get_room_type_by_id(id) do
+    Enum.find(room_types(), &(&1.value == id))
   end
 end
