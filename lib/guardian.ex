@@ -12,7 +12,6 @@ defmodule Finder.Guardian do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    IO.inspect("comming")
 
     try do
       resource = Finder.Accounts.get_user!(id)

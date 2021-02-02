@@ -53,7 +53,7 @@ defmodule FinderWeb.RoomView do
       images: get_room_images(room.images),
       posted_on: get_posted_time_in_ago(room),
       parkings: render_many(room.parkings, FinderWeb.ParkingView, "parking.json"),
-      amenities: render_many(room.amenities, FinderWeb.AmenityView, "amitniy.json")
+      amenities: render_many(room.amenities, FinderWeb.AmenityView, "amenity.json")
     }
   end
 

@@ -31,7 +31,6 @@ defmodule FinderWeb.RoomController do
         {:error, :not_found}
 
       room ->
-        IO.inspect(room)
         render(conn, "show.json", room: room)
     end
   end

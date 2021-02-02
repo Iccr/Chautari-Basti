@@ -87,6 +87,7 @@ defmodule Finder.Rooms do
           |> put_assoc(:district, district)
           |> put_assoc(:user, current_user)
           |> add_district_changes(district)
+          |> IO.inspect()
           |> Repo.insert()
 
         image_params = attrs["images"]
