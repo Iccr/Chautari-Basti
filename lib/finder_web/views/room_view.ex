@@ -68,6 +68,8 @@ defmodule FinderWeb.RoomView do
       type: type_value,
       images: get_room_images(room.images),
       posted_on: get_posted_time_in_ago(room),
+      phone: room.phone,
+      phone_visibility: room.phone_visibility,
       parkings: render_many(room.parkings, FinderWeb.ParkingView, "parking.json"),
       amenities: render_many(room.amenities, FinderWeb.AmenityView, "amenity.json"),
       user: render_one(room.user, FinderWeb.UserView, "user_profile.json")
