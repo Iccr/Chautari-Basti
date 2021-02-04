@@ -49,6 +49,8 @@ defmodule FinderWeb.RoomView do
   def render("room_detail.json", %{room: room}) do
     water = Finder.Rooms.get_water_type_by_id(room.water)
     water_value = if is_nil(water), do: "", else: water.name
+    type = Finder.Rooms.get_room_type_by_id(room.type)
+    type_value = if is_nil(type), do: "", else: type.name
 
     %{
       id: room.id,
@@ -63,10 +65,12 @@ defmodule FinderWeb.RoomView do
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
       water: water_value,
+      type: type_value,
       images: get_room_images(room.images),
       posted_on: get_posted_time_in_ago(room),
       parkings: render_many(room.parkings, FinderWeb.ParkingView, "parking.json"),
-      amenities: render_many(room.amenities, FinderWeb.AmenityView, "amenity.json")
+      amenities: render_many(room.amenities, FinderWeb.AmenityView, "amenity.json"),
+      user: render_one(room.user, FinderWeb.UserView, "user_profile.json")
     }
   end
 

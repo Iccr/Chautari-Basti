@@ -24,4 +24,13 @@ defmodule FinderWeb.UserView do
       provider: user.provider
     }
   end
+
+  def render("user_profile.json", %{user: user}) do
+    %{
+      id: user.id,
+      email: user.email,
+      imageurl: user.imageurl,
+      name: user.name
+    }
+  end
 end
