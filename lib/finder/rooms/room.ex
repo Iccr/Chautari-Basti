@@ -23,14 +23,27 @@ defmodule Finder.Rooms.Room do
 
     belongs_to :district, Finder.Districts.District
     belongs_to :user, Finder.Accounts.User
-    many_to_many :parkings, Finder.Parkings.Parking, join_through: Finder.Rooms.RoomParking
-    many_to_many :amenities, Finder.Amenities.Amenity, join_through: Finder.Rooms.RoomAmenity
+
+    many_to_many :parkings, Finder.Parkings.Parking,
+      join_through: Finder.Rooms.RoomParking,
+      on_replace: :delete
+
+    many_to_many :amenities, Finder.Amenities.Amenity,
+      join_through: Finder.Rooms.RoomAmenity,
+      on_replace: :delete
+
     has_many :images, Finder.Images.Image
 
     timestamps()
   end
 
   @doc false
+
+  def update_changeset(room, attrs) do
+    room
+    |> cast(attrs, @permit_fields)
+    |> validate_required([])
+  end
 
   def changeset(room, attrs) do
     room
@@ -41,7 +54,7 @@ defmodule Finder.Rooms.Room do
     |> validate_length(:images, min: 1)
   end
 
-  def validate_presence_of_district(changeset, attrs) do
+  defp validate_presence_of_district(changeset, attrs) do
     case attrs["district"] do
       nil ->
         add_error(changeset, :district, "district must be present")

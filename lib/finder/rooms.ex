@@ -149,44 +149,109 @@ defmodule Finder.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  # def update_room(%Room{} = room, attrs) do
+  #   attrs = capitalize_address(attrs)
+  #   changeset = Room.changeset(room, attrs)
+
+  #   case changeset do
+  #     %Ecto.Changeset{valid?: false} ->
+  #       changeset
+  #       |> apply_action(:insert)
+
+  #     _ ->
+  #       parkings = Parkings.get_parkings(attrs["parkings"])
+  #       amenities = Amenities.get_amenities(attrs["amenities"])
+
+  #       {:ok, room} =
+  #         changeset
+  #         |> put_assoc(:amenities, amenities)
+  #         |> add_amenities_changes(amenities)
+  #         |> put_assoc(:parkings, parkings)
+  #         |> add_parking_changes(parkings)
+  #         |> Repo.update()
+
+  #       image_params = attrs["images"]
+
+  #       images_ids = room.images |> Enum.map(fn e -> e.id end)
+  #       query = from i in Image, where: i.id in ^images_ids
+  #       Repo.delete_all(query)
+
+  #       associates =
+  #         Enum.map(image_params, fn room_image ->
+  #           image_changeset = Image.changeset(%Image{}, %{image: room_image})
+  #           put_assoc(image_changeset, :room, room)
+  #         end)
+
+  #       insert_image(associates)
+  #       room = load_images(room)
+
+  #       {:ok, room}
+  #   end
+  # end
+
   def update_room(%Room{} = room, attrs) do
-    attrs = capitalize_address(attrs)
-    changeset = Room.changeset(room, attrs)
+    IO.inspect(attrs)
+    # attrs = capitalize_address(attrs)
+    changeset = update_room_changeset(room, attrs)
+    IO.inspect(changeset)
 
-    case changeset do
-      %Ecto.Changeset{valid?: false} ->
+    changeset =
+      if attrs["parkings"] != nil do
+        update_room_parking(changeset, attrs["parkings"])
+      else
         changeset
-        |> apply_action(:insert)
+      end
 
-      _ ->
-        parkings = Parkings.get_parkings(attrs["parkings"])
-        amenities = Amenities.get_amenities(attrs["amenities"])
+    changeset =
+      if attrs["amenities"] != nil do
+        update_room_amenities(changeset, attrs["amenities"])
+      else
+        changeset
+      end
 
-        {:ok, room} =
-          changeset
-          |> put_assoc(:amenities, amenities)
-          |> add_amenities_changes(amenities)
-          |> put_assoc(:parkings, parkings)
-          |> add_parking_changes(parkings)
-          |> Repo.update()
+    {:ok, room} =
+      changeset
+      |> Repo.update()
 
-        image_params = attrs["images"]
-
-        images_ids = room.images |> Enum.map(fn e -> e.id end)
-        query = from i in Image, where: i.id in ^images_ids
-        Repo.delete_all(query)
-
-        associates =
-          Enum.map(image_params, fn room_image ->
-            image_changeset = Image.changeset(%Image{}, %{image: room_image})
-            put_assoc(image_changeset, :room, room)
-          end)
-
-        insert_image(associates)
-        room = load_images(room)
-
-        {:ok, room}
+    if(attrs["images"] != nil) do
+      update_room_image(room, attrs["images"])
+    else
+      {:ok, room}
     end
+
+    room = get_preloaded_room_with(room.id)
+    {:ok, room}
+  end
+
+  defp update_room_amenities(changeset, amenities_param) do
+    amenities = Amenities.get_amenities(amenities_param)
+
+    changeset
+    |> put_assoc(:amenities, amenities)
+    |> add_amenities_changes(amenities)
+  end
+
+  defp update_room_parking(changeset, parkings_params) do
+    parkings = Parkings.get_parkings(parkings_params)
+
+    changeset
+    |> put_assoc(:parkings, parkings)
+    |> add_parking_changes(parkings)
+  end
+
+  defp update_room_image(room, image_params) do
+    images_ids = room.images |> Enum.map(fn e -> e.id end)
+    query = from i in Image, where: i.id in ^images_ids
+    Repo.delete_all(query)
+
+    associates =
+      Enum.map(image_params, fn room_image ->
+        image_changeset = Image.changeset(%Image{}, %{image: room_image})
+        put_assoc(image_changeset, :room, room)
+      end)
+
+    insert_image(associates)
   end
 
   def capitalize_address(attrs) do
@@ -229,6 +294,10 @@ defmodule Finder.Rooms do
   """
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
+  end
+
+  def update_room_changeset(%Room{} = room, attrs \\ %{}) do
+    Room.update_changeset(room, attrs)
   end
 
   def water_types do

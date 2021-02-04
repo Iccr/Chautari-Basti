@@ -5,7 +5,11 @@ defmodule Finder.Parkings.Parking do
   schema "parkings" do
     field :name, :string
     field :tag, :integer
-    many_to_many :rooms, Finder.Rooms.Room, join_through: Finder.Rooms.RoomParking
+
+    many_to_many :rooms, Finder.Rooms.Room,
+      join_through: Finder.Rooms.RoomParking,
+      on_replace: :delete
+
     timestamps()
   end
 
