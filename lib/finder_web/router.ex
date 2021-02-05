@@ -26,7 +26,7 @@ defmodule FinderWeb.Router do
     post "/appinfo", AppinfoController, :index
 
     pipe_through [:authenticated]
-    get "/my_rooms", UserController, :my_rooms
+    get "/my_rooms", RoomController, :my_rooms
   end
 
   # Enables LiveDashboard only for development

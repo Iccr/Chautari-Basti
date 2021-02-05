@@ -115,6 +115,6 @@ defmodule Finder.Accounts do
 
   def load_my_rooms(current_user) do
     current_user
-    |> Repo.preload(rooms: :images)
+    |> Repo.preload(rooms: {:images, :amenities, :parkings, :district})
   end
 end

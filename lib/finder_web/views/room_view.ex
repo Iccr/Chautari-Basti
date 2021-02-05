@@ -7,6 +7,10 @@ defmodule FinderWeb.RoomView do
     %{data: render_many(rooms, RoomView, "room.json")}
   end
 
+  def render("index_with_detail.json", %{rooms: rooms}) do
+    %{data: render_many(rooms, RoomView, "room_detail.json")}
+  end
+
   def render("show.json", %{room: room}) do
     %{data: render_one(room, RoomView, "room.json")}
   end

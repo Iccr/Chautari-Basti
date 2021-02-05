@@ -11,14 +11,6 @@ defmodule FinderWeb.UserController do
     render(conn, "index.json", users: users)
   end
 
-  def my_rooms(conn, _params) do
-    current_user = conn.assigns.current_user
-    user_with_rooms = Accounts.load_my_rooms(current_user)
-
-    conn
-    |> render("user_with_rooms.json", user: user_with_rooms)
-  end
-
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn

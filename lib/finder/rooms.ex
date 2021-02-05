@@ -267,6 +267,15 @@ defmodule Finder.Rooms do
     end
   end
 
+  def my_rooms(user) do
+    query =
+      from r in Room,
+        where: r.user_id == ^user.id,
+        preload: [:images, :amenities, :parkings, :district, :user]
+
+    Repo.all(query)
+  end
+
   @doc """
   Deletes a room.
 
