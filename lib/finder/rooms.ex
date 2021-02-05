@@ -92,7 +92,6 @@ defmodule Finder.Rooms do
           |> put_assoc(:district, district)
           |> put_assoc(:user, current_user)
           |> add_district_changes(district)
-          |> IO.inspect()
           |> Repo.insert()
 
         image_params = attrs["images"]
@@ -191,10 +190,8 @@ defmodule Finder.Rooms do
   # end
 
   def update_room(%Room{} = room, attrs) do
-    IO.inspect(attrs)
     # attrs = capitalize_address(attrs)
     changeset = update_room_changeset(room, attrs)
-    IO.inspect(changeset)
 
     changeset =
       if attrs["parkings"] != nil do

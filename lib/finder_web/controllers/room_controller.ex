@@ -51,7 +51,7 @@ defmodule FinderWeb.RoomController do
       room ->
         with {:ok, %Room{} = room} <- Rooms.update_room(room, room_params) do
           room = Rooms.load_images(room)
-          render(conn, "show.json", room: room)
+          render(conn, "show_detail.json", room: room)
         end
     end
   end

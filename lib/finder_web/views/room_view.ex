@@ -20,15 +20,6 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("room.json", %{room: room}) do
-    water = Finder.Rooms.get_water_type_by_id(room.water)
-    water_value = if is_nil(water), do: "", else: water.name
-    type = Finder.Rooms.get_room_type_by_id(room.type)
-    type_value = if is_nil(type), do: "", else: type.name
-
-    # field :type, :integer
-    # field :phone, :string
-    # field :phone_visibility, :boolean
-
     %{
       id: room.id,
       lat: room.lat,
@@ -41,8 +32,8 @@ defmodule FinderWeb.RoomView do
       available: room.available,
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
-      water: water_value,
-      type: type_value,
+      water: water_value(room),
+      type: type_value(room),
       phone: room.phone,
       phone_visibility: room.phone_visibility,
       images: get_room_images(room.images),
@@ -51,10 +42,16 @@ defmodule FinderWeb.RoomView do
   end
 
   def render("room_detail.json", %{room: room}) do
-    water = Finder.Rooms.get_water_type_by_id(room.water)
-    water_value = if is_nil(water), do: "", else: water.name
-    type = Finder.Rooms.get_room_type_by_id(room.type)
-    type_value = if is_nil(type), do: "", else: type.name
+    # water = Finder.Rooms.get_water_type_by_id(room.water)
+    # water_value = if is_nil(water), do: "", else: water.value
+    # type = Finder.Rooms.get_room_type_by_id(room.type)
+    # type_value = if is_nil(type), do: "", else: type.value
+
+    district = %{
+      id: room.district.id,
+      name: room.district.name,
+      state: room.district.state
+    }
 
     %{
       id: room.id,
@@ -68,16 +65,34 @@ defmodule FinderWeb.RoomView do
       available: room.available,
       parking_count: room.parking_count,
       amenity_count: room.amenity_count,
-      water: water_value,
-      type: type_value,
+      water: water_value(room),
+      type: type_value(room),
       images: get_room_images(room.images),
       posted_on: get_posted_time_in_ago(room),
       phone: room.phone,
       phone_visibility: room.phone_visibility,
+      district: district,
       parkings: render_many(room.parkings, FinderWeb.ParkingView, "parking.json"),
       amenities: render_many(room.amenities, FinderWeb.AmenityView, "amenity.json"),
       user: render_one(room.user, FinderWeb.UserView, "user_profile.json")
     }
+  end
+
+  def water_value(%{water: nil}) do
+    nil
+  end
+
+  def water_value(%{water: id}) do
+    Finder.Rooms.get_water_type_by_id(id).value
+  end
+
+  def type_value(%{type: nil}) do
+    nil
+  end
+
+  def type_value(%{type: id}) do
+    IO.inspect(id)
+    Finder.Rooms.get_room_type_by_id(id).value
   end
 
   def get_room_images(images) do
