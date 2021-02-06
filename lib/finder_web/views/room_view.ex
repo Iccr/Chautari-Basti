@@ -95,6 +95,10 @@ defmodule FinderWeb.RoomView do
     Finder.Rooms.get_room_type_by_id(id).value
   end
 
+  def get_room_images(%Ecto.Association.NotLoaded{}) do
+    []
+  end
+
   def get_room_images(images) do
     Enum.map(images, fn e -> get_url(e.image) end)
   end
