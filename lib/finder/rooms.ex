@@ -23,10 +23,13 @@ defmodule Finder.Rooms do
   """
   def list_rooms do
     # Post |> order_by(constraint) |> Repo.all()
-    Room
-    |> order_by(desc: :inserted_at)
-    |> Repo.all()
-    |> Repo.preload(:images)
+    query =
+      from r in Room,
+        where: r.available == true,
+        order_by: [desc: :inserted_at],
+        preload: [:images]
+
+    Repo.all(query)
   end
 
   @doc """
@@ -268,6 +271,7 @@ defmodule Finder.Rooms do
     query =
       from r in Room,
         where: r.user_id == ^user.id,
+        order_by: [desc: :inserted_at],
         preload: [:images, :amenities, :parkings, :district, :user]
 
     Repo.all(query)
