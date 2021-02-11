@@ -17,7 +17,7 @@ defmodule Finder.Chats.Messages do
   @doc false
   def changeset(messages, attrs) do
     messages
-    |> cast(attrs, [:content])
-    |> validate_required([:content])
+    |> cast(attrs, [:content, :sender_id, :conversation_id])
+    |> validate_required([:content, :sender_id, :conversation_id])
   end
 end

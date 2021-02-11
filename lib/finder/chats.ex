@@ -7,6 +7,7 @@ defmodule Finder.Chats do
   alias Finder.Repo
 
   alias Finder.Chats.Conversation
+  alias Finder.Chats.Messages
 
   @doc """
   Returns the list of conversations.
@@ -103,8 +104,13 @@ defmodule Finder.Chats do
   end
 
   def list_user_conversations(user) do
-    user
-    |> Repo.preload(:conversations)
+    query =
+      from c in Finder.Chats.Conversation,
+        where: c.sender_id == ^user.id or c.recipient_id == ^user.id,
+        order_by: [desc: :inserted_at],
+        preload: :mesages
+
+    Repo.all(query)
   end
 
   def find_with_my_id_and_recipient_id(%{"sender_id" => sender_id, "recipient_id" => recipient_id}) do
@@ -112,8 +118,21 @@ defmodule Finder.Chats do
 
     query =
       from c in Conversation,
-        where: c.sender_id == ^sender_id or c.recipient_id == ^recipient_id
+        where: c.sender_id == ^sender_id and c.recipient_id == ^recipient_id,
+        preload: [:messages]
 
     Repo.all(query)
+  end
+
+  def create_message(
+        %{
+          "sender_id" => _sender_id,
+          "conversation_id" => _conversation_id,
+          "content" => _content
+        } = attrs
+      ) do
+    %Messages{}
+    |> Messages.changeset(attrs)
+    |> Repo.insert()
   end
 end

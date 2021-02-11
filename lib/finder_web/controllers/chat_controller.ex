@@ -28,12 +28,12 @@ defmodule FinderWeb.ChatController do
                }) do
           conn
           |> put_status(:created)
-          |> render("show.json", chat: chat)
+          |> render("index.json", chats: [chat])
         end
 
-      [head | _tail] ->
+      result ->
         conn
-        |> render("show.json", chat: head)
+        |> render("index.json", chats: result)
     end
 
     # with {:ok, %Conversation{} = conversation} <- Chats.create_conversation(conversations_params) do
