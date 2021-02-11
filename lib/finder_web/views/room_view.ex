@@ -91,7 +91,6 @@ defmodule FinderWeb.RoomView do
   end
 
   def type_value(%{type: id}) do
-    IO.inspect(id)
     Finder.Rooms.get_room_type_by_id(id).value
   end
 

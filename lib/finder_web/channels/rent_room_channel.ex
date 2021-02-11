@@ -3,7 +3,7 @@ defmodule FinderWeb.RentRoomChannel do
 
   @impl true
   def join("rent_room:lobby", payload, socket) do
-    if authorized?(payload) do
+    if authorized?(socket, payload) do
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -16,7 +16,6 @@ defmodule FinderWeb.RentRoomChannel do
   # @impl true
   # def handle_in("ping", payload, socket) do
   #   handle_in("shout", payload, socket)
-  #   IO.inspect("shout from ping")
   #   {:reply, {:ok, payload}, socket}
   # end
 
@@ -31,7 +30,7 @@ defmodule FinderWeb.RentRoomChannel do
   end
 
   # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
+  defp authorized?(socket, _payload) do
+    Guardian.Phoenix.Socket.authenticated?(socket)
   end
 end

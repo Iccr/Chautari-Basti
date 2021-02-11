@@ -7,7 +7,15 @@ defmodule FinderWeb.ConversationView do
     %{data: %{conversations: render_many(conversations, ConversationView, "conversation.json")}}
   end
 
+  def render("show.json", %{conversation: conversation}) do
+    %{data: render_one(conversation, ConversationView, "conversation.json")}
+  end
+
   def render("conversation.json", %{conversation: conversation}) do
-    %{sender_id: conversation.id, recipient_id: conversation.recipient_id}
+    %{
+      id: conversation.id,
+      sender_id: conversation.sender_id,
+      recipient_id: conversation.recipient_id
+    }
   end
 end

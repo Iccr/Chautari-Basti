@@ -19,7 +19,7 @@ defmodule Finder.Chats.Conversation do
   @doc false
   def changeset(conversation, attrs) do
     conversation
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:sender_id, :recipient_id])
+    |> validate_required([:sender_id, :recipient_id])
   end
 end

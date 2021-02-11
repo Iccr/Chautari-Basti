@@ -105,10 +105,11 @@ defmodule Finder.Chats do
   def list_user_conversations(user) do
     user
     |> Repo.preload(:conversations)
-    |> IO.inspect()
   end
 
   def find_with_my_id_and_recipient_id(%{"sender_id" => sender_id, "recipient_id" => recipient_id}) do
+    IO.puts("find_with_my_id_and_recipient_id")
+
     query =
       from c in Conversation,
         where: c.sender_id == ^sender_id or c.recipient_id == ^recipient_id
