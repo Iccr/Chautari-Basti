@@ -5,7 +5,7 @@ defmodule FinderWeb.ChatController do
 
   action_fallback FinderWeb.FallbackController
 
-  def conversation(conn, _params) do
+  def index(conn, _params) do
     current_user = conn.assigns.current_user
     conversactions = Chats.list_user_conversations(current_user)
 
@@ -13,7 +13,7 @@ defmodule FinderWeb.ChatController do
     |> render("index.json", chats: conversactions)
   end
 
-  def find_or_create(conn, %{"recipient_id" => recipient_id} = _params) do
+  def create(conn, %{"recipient_id" => recipient_id} = _params) do
     current_user = conn.assigns.current_user
 
     case Chats.find_with_my_id_and_recipient_id(%{

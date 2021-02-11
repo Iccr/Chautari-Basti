@@ -27,6 +27,7 @@ defmodule FinderWeb.Router do
 
     pipe_through [:authenticated]
     get "/my_rooms", RoomController, :my_rooms
+    resources "/chats", ChatController, only: [:index, :create]
   end
 
   # Enables LiveDashboard only for development
