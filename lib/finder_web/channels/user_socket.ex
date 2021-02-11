@@ -4,6 +4,8 @@ defmodule FinderWeb.UserSocket do
   ## Channels
   # channel "room:*", FinderWeb.RoomChannel
 
+  channel "rent_room:*", FinderWeb.RentRoomChannel
+
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
   # verification, you can put default assigns into
@@ -15,10 +17,23 @@ defmodule FinderWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket) do
+    case Guardian.Phoenix.Socket.authenticate(socket, Finder.Guardian, token) do
+      {:ok, authed_socket} ->
+        {:ok, authed_socket}
+
+      {:error, _} ->
+        :error
+    end
   end
+
+  @impl true
+  # def connect(_params, _socket, _connect_info) do
+  #   IO.puts("FAILED")
+  #   :error
+  # end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
