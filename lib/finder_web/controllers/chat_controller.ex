@@ -5,23 +5,15 @@ defmodule FinderWeb.ChatController do
 
   action_fallback FinderWeb.FallbackController
 
-  # def index(conn, _params) do
-  #   # field :sender_id, :id
-  #   # field :recipient_id, :id
-
-  #   current_user = conn.assigns.current_user
-  #   conversations = Chats.list_conversations()
-  #   render(conn, "index.json", conversations: conversations)
-  # end
-
-  # when user goes ty chat view in profile controller in mobile. show list of all  conversations
-
-  def conversation(conn, params) do
+  def conversation(conn, _params) do
     current_user = conn.assigns.current_user
     conversactions = Chats.list_user_conversations(current_user)
+
+    conn
+    |> render("index.json", chats: conversactions)
   end
 
-  def find_or_create(conn, %{"recipient_id" => recipient_id} = params) do
+  def find_or_create(conn, %{"recipient_id" => recipient_id} = _params) do
     current_user = conn.assigns.current_user
 
     case Chats.find_with_my_id_and_recipient_id(%{
@@ -29,14 +21,19 @@ defmodule FinderWeb.ChatController do
            "recipient_id" => recipient_id
          }) do
       [] ->
-        {:ok, chats} =
-          Chats.create_conversation(%{
-            "sender_id" => current_user.id,
-            "recipient_id" => recipient_id
-          })
+        with {:ok, chat} <-
+               Chats.create_conversation(%{
+                 "sender_id" => current_user.id,
+                 "recipient_id" => recipient_id
+               }) do
+          conn
+          |> put_status(:created)
+          |> render("show.json", chat: chat)
+        end
 
-      [head | tail] ->
-        nil
+      [head | _tail] ->
+        conn
+        |> render("show.json", chat: head)
     end
 
     # with {:ok, %Conversation{} = conversation} <- Chats.create_conversation(conversations_params) do
