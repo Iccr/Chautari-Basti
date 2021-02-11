@@ -1,4 +1,4 @@
-defmodule FinderWeb.Conversations do
+defmodule FinderWeb.ConversationController do
   use FinderWeb, :controller
 
   alias Finder.Chats.Conversation
@@ -6,6 +6,10 @@ defmodule FinderWeb.Conversations do
   action_fallback FinderWeb.FallbackController
 
   def index(conn, _params) do
+    # field :sender_id, :id
+    # field :recipient_id, :id
+
+    current_user = conn.assigns.current_user
     conversations = Chats.list_conversations()
     render(conn, "index.json", conversations: conversations)
   end
