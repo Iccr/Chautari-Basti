@@ -16,7 +16,7 @@ defmodule Finder.Accounts.User do
     has_many :conversations, Finder.Chats.Conversation
     # has_many :sender_conversations, Finder.Chats.Conversation, foreign_key: :sender_id
     # has_many :recipient_conversations, Finder.Chats.Conversation, foreign_key: :recipient_id
-    has_many :messages, Finder.Chats.Message, foreign_key: :sender_id
+    has_many :messages, Finder.Chats.Messages, foreign_key: :sender_id
     timestamps()
   end
 
