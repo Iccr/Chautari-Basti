@@ -16,8 +16,18 @@ defmodule FinderWeb.ConversationView do
     %{
       id: conversation.id,
       sender_id: conversation.sender_id,
+      sender_name: conversation.sender.name,
       recipient_id: conversation.recipient_id,
-      messages: render_many(conversation.messages, MessageView, "message.json")
+      recipient_name: conversation.recipient.name,
+      messages: render_messages(conversation.messages)
     }
+  end
+
+  defp render_messages(%Ecto.Association.NotLoaded{}) do
+    render_many([], MessageView, "message.json")
+  end
+
+  defp render_messages(messages) do
+    render_many(messages, MessageView, "message.json")
   end
 end

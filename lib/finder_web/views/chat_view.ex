@@ -1,6 +1,7 @@
 defmodule FinderWeb.ChatView do
   use FinderWeb, :view
 
+  alias FinderWeb.ChatView
   alias FinderWeb.ConversationView
 
   def render("index.json", %{chats: chats}) do

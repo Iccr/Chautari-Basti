@@ -104,13 +104,7 @@ defmodule Finder.Chats do
   end
 
   def list_user_conversations(user) do
-    query =
-      from c in Finder.Chats.Conversation,
-        where: c.sender_id == ^user.id or c.recipient_id == ^user.id,
-        order_by: [desc: :inserted_at],
-        preload: :mesages
-
-    Repo.all(query)
+    Repo.preload(user, recipient_conversations: [:messages, :recipient, :sender])
   end
 
   def find_with_my_id_and_recipient_id(%{"sender_id" => sender_id, "recipient_id" => recipient_id}) do
@@ -119,7 +113,7 @@ defmodule Finder.Chats do
     query =
       from c in Conversation,
         where: c.sender_id == ^sender_id and c.recipient_id == ^recipient_id,
-        preload: [:messages]
+        preload: [:messages, :sender, :recipient]
 
     Repo.all(query)
   end

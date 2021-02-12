@@ -2,7 +2,7 @@ defmodule FinderWeb.RentRoomChannel do
   use FinderWeb, :channel
   alias Finder.Chats
   @impl true
-  def join("rent_room:lobby", payload, socket) do
+  def join("rent_room" <> _conversation_id, payload, socket) do
     if authorized?(socket, payload) do
       {:ok, socket}
     else
@@ -24,7 +24,9 @@ defmodule FinderWeb.RentRoomChannel do
   @impl true
   def handle_in("shout", payload, socket) do
     if Guardian.Phoenix.Socket.authenticated?(socket) do
-      Chats.create_message(payload)
+      {:ok, message} = Chats.create_message(payload)
+      IO.inspect(payload)
+
       broadcast(socket, "shout", payload)
       {:noreply, socket}
     end

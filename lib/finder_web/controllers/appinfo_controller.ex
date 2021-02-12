@@ -1,4 +1,5 @@
 defmodule FinderWeb.AppinfoController do
+  require Logger
   use FinderWeb, :controller
   alias Finder.Amenities
   alias Finder.Parkings
@@ -12,6 +13,7 @@ defmodule FinderWeb.AppinfoController do
 
     waters = Rooms.water_types()
     types = Rooms.room_types()
+    Logger.debug(types)
 
     render(conn, "index.json",
       amenities: amenities,
