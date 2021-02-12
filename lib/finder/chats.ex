@@ -129,4 +129,12 @@ defmodule Finder.Chats do
     |> Messages.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_messages_for_conversation_id(conversation_id) do
+    query =
+      from m in Messages,
+        where: m.conversation_id == ^conversation_id
+
+    Repo.all(query)
+  end
 end
