@@ -14,9 +14,10 @@ defmodule Finder.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Finder.PubSub},
       # Start the Endpoint (http/https)
-      FinderWeb.Endpoint
+      FinderWeb.Endpoint,
       # Start a worker by calling: Finder.Worker.start_link(arg)
       # {Finder.Worker, arg}
+      FinderWeb.RoomPresence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

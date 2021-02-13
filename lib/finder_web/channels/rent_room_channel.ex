@@ -1,6 +1,8 @@
 defmodule FinderWeb.RentRoomChannel do
   use FinderWeb, :channel
+  alias FinderWeb.RoomPresence
   alias Finder.Chats
+
   @impl true
   def join("rent_room" <> _conversation_id, payload, socket) do
     if authorized?(socket, payload) do
@@ -38,19 +40,12 @@ defmodule FinderWeb.RentRoomChannel do
   @impl true
   @spec handle_info(:after_join, Phoenix.Socket.t()) :: {:noreply, Phoenix.Socket.t()}
   def handle_info(:after_join, socket) do
-    # broadcast(socket, "sent_message", %{})
-    # id = String.split(socket.topic, ":") |> Enum.at(1)
+    RoomPresence.track(socket, socket.assigns.user_id, %{
+      typing: false,
+      user_id: socket.assigns.user_id
+    })
 
-    # Finder.Chats.get_messages_for_conversation_id(id)
-    # |> Enum.each(fn msg ->
-    #   broadcast(socket, "shout", %{
-    #     content: msg.content,
-    #     conversation_id: msg.conversation_id,
-    #     sender_id: msg.sender_id
-    #   })
-    # end)
-
-    # broadcast(socket, "sent", %{"event" => "done"})
+    broadcast(socket, "presence_state", RoomPresence.list(socket))
 
     {:noreply, socket}
   end
