@@ -5,6 +5,7 @@ defmodule FinderWeb.UserSocket do
   # channel "room:*", FinderWeb.RoomChannel
 
   channel "rent_room:*", FinderWeb.RentRoomChannel
+  channel "user_room:*", FinderWeb.RentRoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

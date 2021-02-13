@@ -6,6 +6,8 @@ defmodule Finder.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
+
     children = [
       # Start the Ecto repository
       Finder.Repo,
@@ -17,7 +19,8 @@ defmodule Finder.Application do
       FinderWeb.Endpoint,
       # Start a worker by calling: Finder.Worker.start_link(arg)
       # {Finder.Worker, arg}
-      FinderWeb.RoomPresence
+
+      {FinderWeb.RoomPresence, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

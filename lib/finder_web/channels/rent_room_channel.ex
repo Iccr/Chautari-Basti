@@ -4,7 +4,17 @@ defmodule FinderWeb.RentRoomChannel do
   alias Finder.Chats
 
   @impl true
-  def join("rent_room" <> _conversation_id, payload, socket) do
+  def join("rent_room:" <> _conversation_id, payload, socket) do
+    if authorized?(socket, payload) do
+      # send(self(), :after_join)
+      {:ok, socket}
+    else
+      {:error, %{reason: "unauthorized"}}
+    end
+  end
+
+  @impl true
+  def join("user_room:loby", payload, socket) do
     if authorized?(socket, payload) do
       send(self(), :after_join)
       {:ok, socket}
@@ -40,11 +50,16 @@ defmodule FinderWeb.RentRoomChannel do
   @impl true
   @spec handle_info(:after_join, Phoenix.Socket.t()) :: {:noreply, Phoenix.Socket.t()}
   def handle_info(:after_join, socket) do
-    RoomPresence.track(socket, socket.assigns.user_id, %{
-      typing: false,
-      user_id: socket.assigns.user_id
-    })
+    user_id = socket.assigns.guardian_default_resource.id
 
+    {:ok, _} =
+      RoomPresence.track(socket, user_id, %{
+        user_id: user_id,
+        typing: false
+      })
+
+    IO.puts("Broadcasting presence_state...")
+    IO.inspect(RoomPresence.list(socket))
     broadcast(socket, "presence_state", RoomPresence.list(socket))
 
     {:noreply, socket}
