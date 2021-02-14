@@ -23,6 +23,18 @@ defmodule FinderWeb.RentRoomChannel do
     end
   end
 
+  def handle_in("user:typing", %{"typing" => typing}, socket) do
+    user_id = socket.assigns.guardian_default_resource.id
+
+    {:ok, _} =
+      RoomPresence.update(socket, user_id, %{
+        user_id: user_id,
+        typing: typing
+      })
+
+    {:reply, :ok, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
 
