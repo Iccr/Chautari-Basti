@@ -10,7 +10,6 @@ defmodule FinderWeb.ChatController do
     user = Chats.list_user_conversations(current_user)
 
     conversations = user.recipient_conversations ++ user.sender_conversations
-    IO.inspect(conversations)
 
     conn
     |> render("index.json", chats: conversations)

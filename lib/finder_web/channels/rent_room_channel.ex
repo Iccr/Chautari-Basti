@@ -6,56 +6,38 @@ defmodule FinderWeb.RentRoomChannel do
   @impl true
   def join("rent_room:" <> _conversation_id, payload, socket) do
     if authorized?(socket, payload) do
-      send(self(), :after_join)
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-  @impl true
-  def join("user_room:loby", payload, socket) do
+  def join("rent_room:loby", payload, socket) do
     if authorized?(socket, payload) do
-      send(self(), :after_join)
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-  # def handle_in(
-  #       "user_room:presence_update",
-  #       %{"typing" => typing, "user_id" => user_id} = _payload,
-  #       socket
-  #     ) do
-  #   if Guardian.Phoenix.Socket.authenticated?(socket) do
-  #     IO.puts("before update")
-  #     IO.inspect(RoomPresence.list(socket))
+  def handle_in(
+        "rent_room:presence_update",
+        %{"user_id" => user_id, "in_room" => in_room} = _payload,
+        socket
+      ) do
+    if Guardian.Phoenix.Socket.authenticated?(socket) do
+      RoomPresence.update(socket, user_id, %{
+        user_id: user_id,
+        in_room: in_room
+      })
 
-  #     RoomPresence.update(socket, user_id, %{
-  #       user_id: user_id,
-  #       typing: typing
-  #     })
+      broadcast(socket, "presence_state", RoomPresence.list(socket))
 
-  #     IO.puts("after update")
-  #     IO.inspect(RoomPresence.list(socket))
-  #     broadcast(socket, "presence_state", RoomPresence.list(socket))
+      {:noreply, socket}
+    end
+  end
 
-  #     {:noreply, socket}
-  #   end
-  # end
-
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
-
-  # @impl true
-  # def handle_in("ping", payload, socket) do
-  #   handle_in("shout", payload, socket)
-  #   {:reply, {:ok, payload}, socket}
-  # end
-
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (rent_room:lobby).
+  #  conversation from the users are routed from here. authorized and saved to database
   @impl true
   def handle_in("shout", payload, socket) do
     if Guardian.Phoenix.Socket.authenticated?(socket) do
@@ -65,9 +47,7 @@ defmodule FinderWeb.RentRoomChannel do
     end
   end
 
-  # data['content'] = this.content;
-  #   data['conversation_id'] = this.conversationId;
-  #   data['sender_id'] = this.senderId;
+  # called as soon as user joins the rent_room channel. authorized and tracked the room presence
 
   @impl true
   @spec handle_info(:after_join, Phoenix.Socket.t()) :: {:noreply, Phoenix.Socket.t()}
@@ -77,10 +57,11 @@ defmodule FinderWeb.RentRoomChannel do
     {:ok, _} =
       RoomPresence.track(socket, user_id, %{
         user_id: user_id,
-        typing: false
+        in_room: true
       })
 
     broadcast(socket, "presence_state", RoomPresence.list(socket))
+
     {:noreply, socket}
   end
 

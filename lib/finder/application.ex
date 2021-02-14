@@ -20,7 +20,8 @@ defmodule Finder.Application do
       # Start a worker by calling: Finder.Worker.start_link(arg)
       # {Finder.Worker, arg}
 
-      {FinderWeb.RoomPresence, []}
+      {FinderWeb.RoomPresence, []},
+      {FinderWeb.UserPresence, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
