@@ -23,20 +23,26 @@ defmodule FinderWeb.RentRoomChannel do
     end
   end
 
-  def handle_in("user:typing", %{"typing" => typing}, socket) do
-    user_id = socket.assigns.guardian_default_resource.id
-    IO.puts("before update")
-    IO.inspect(RoomPresence.list(socket))
+  def handle_in(
+        "user_room:presence_update",
+        %{"typing" => typing, "user_id" => user_id} = _payload,
+        socket
+      ) do
+    if Guardian.Phoenix.Socket.authenticated?(socket) do
+      IO.puts("before update")
+      IO.inspect(RoomPresence.list(socket))
 
-    {:ok, _} =
       RoomPresence.update(socket, user_id, %{
         user_id: user_id,
         typing: typing
       })
 
-    IO.puts("after update")
-    IO.inspect(RoomPresence.list(socket))
-    {:reply, :ok, socket}
+      IO.puts("after update")
+      IO.inspect(RoomPresence.list(socket))
+      broadcast(socket, "presence_state", RoomPresence.list(socket))
+
+      {:noreply, socket}
+    end
   end
 
   # Channels can be used in a request/response fashion
