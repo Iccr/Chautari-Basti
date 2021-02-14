@@ -104,7 +104,10 @@ defmodule Finder.Chats do
   end
 
   def list_user_conversations(user) do
-    Repo.preload(user, recipient_conversations: [:messages, :recipient, :sender])
+    Repo.preload(user,
+      recipient_conversations: [:messages, :recipient, :sender],
+      sender_conversations: [:messages, :recipient, :sender]
+    )
   end
 
   def find_with_my_id_and_recipient_id(%{"sender_id" => sender_id, "recipient_id" => recipient_id}) do

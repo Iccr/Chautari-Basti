@@ -25,6 +25,8 @@ defmodule FinderWeb.RentRoomChannel do
 
   def handle_in("user:typing", %{"typing" => typing}, socket) do
     user_id = socket.assigns.guardian_default_resource.id
+    IO.puts("before update")
+    IO.inspect(RoomPresence.list(socket))
 
     {:ok, _} =
       RoomPresence.update(socket, user_id, %{
@@ -32,6 +34,8 @@ defmodule FinderWeb.RentRoomChannel do
         typing: typing
       })
 
+    IO.puts("after update")
+    IO.inspect(RoomPresence.list(socket))
     {:reply, :ok, socket}
   end
 
