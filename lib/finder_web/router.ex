@@ -24,6 +24,7 @@ defmodule FinderWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     post "/login", SessionController, :login
     post "/appinfo", AppinfoController, :index
+    post "/search_room", RoomController, :search
 
     pipe_through [:authenticated]
     get "/my_rooms", RoomController, :my_rooms

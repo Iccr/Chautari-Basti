@@ -14,14 +14,6 @@ defmodule FinderWeb.RoomController do
     render(conn, "index.json", rooms: rooms)
   end
 
-  def my_rooms(conn, _params) do
-    current_user = conn.assigns.current_user
-    rooms = Rooms.my_rooms(current_user)
-
-    conn
-    |> render("index_with_detail.json", rooms: rooms)
-  end
-
   def create(conn, room_params) do
     current_user = conn.assigns.current_user
 
@@ -66,5 +58,18 @@ defmodule FinderWeb.RoomController do
           render(conn, "show.json", room: room)
         end
     end
+  end
+
+  def my_rooms(conn, _params) do
+    current_user = conn.assigns.current_user
+    rooms = Rooms.my_rooms(current_user)
+
+    conn
+    |> render("index_with_detail.json", rooms: rooms)
+  end
+
+  def search(conn, params) do
+    rooms = Rooms.search(params)
+    render(conn, "index.json", rooms: rooms)
   end
 end

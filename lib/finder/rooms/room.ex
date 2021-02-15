@@ -1,6 +1,7 @@
 defmodule Finder.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   @permit_fields ~w(lat long address number_of_rooms price state district_name available water type phone phone_visibility)a
   @required_fields ~w(lat long address number_of_rooms price  available water type)a
@@ -72,5 +73,21 @@ defmodule Finder.Rooms.Room do
       _ ->
         changeset
     end
+  end
+
+  def find_address(query \\ Room, address)
+
+  def find_address(query, nil) do
+    query
+  end
+
+  def find_address(query, address) do
+    # address = String.downcase(address)
+    address = "%#{String.downcase(address)}%"
+
+    query
+    |> where([r], ilike(r.address, ^address))
+
+    # |> where([r], fragment("lower(?)", r.address) == ^address)
   end
 end

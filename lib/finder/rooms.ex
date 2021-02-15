@@ -277,6 +277,13 @@ defmodule Finder.Rooms do
     Repo.all(query)
   end
 
+  def search(attrs) do
+    # query
+    Room
+    |> Room.find_address(attrs["address"])
+    |> Repo.all()
+  end
+
   @doc """
   Deletes a room.
 
