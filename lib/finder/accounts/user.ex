@@ -2,7 +2,7 @@ defmodule Finder.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @attrs ~w(email imageurl name token provider)a
+  @attrs ~w(email imageurl name token provider fuid fcm)a
   @required ~w(email token provider)a
 
   schema "users" do
