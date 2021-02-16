@@ -49,7 +49,8 @@ defmodule Finder.MixProject do
       {:httpoison, "~> 1.8"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.3"},
-      {:timex, "~> 3.6"}
+      {:timex, "~> 3.6"},
+      {:cors_plug, "~> 2.0"}
     ]
   end
 

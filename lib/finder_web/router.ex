@@ -16,6 +16,7 @@ defmodule FinderWeb.Router do
 
   scope "/api/v1", FinderWeb do
     pipe_through [:api]
+
     resources "/rooms", RoomController, except: [:new, :edit]
     resources "/districts", DistrictController, only: [:index, :show]
     resources "/amenities", AmenityController, only: [:index]

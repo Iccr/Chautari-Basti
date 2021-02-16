@@ -20,6 +20,8 @@ defmodule FinderWeb.Endpoint do
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
+  plug CORSPlug
+
   plug Plug.Static,
     at: "/",
     from: :finder,
@@ -50,5 +52,6 @@ defmodule FinderWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
   plug FinderWeb.Router
 end
