@@ -15,13 +15,17 @@ defmodule FinderWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
+    IO.inspect(user)
+
     %{
       id: user.id,
       email: user.email,
       imageurl: user.imageurl,
       name: user.name,
       token: user.auth_token,
-      provider: user.provider
+      provider: user.provider,
+      fcm: user.fcm,
+      fuid: user.fuid
     }
   end
 
@@ -30,7 +34,9 @@ defmodule FinderWeb.UserView do
       id: user.id,
       email: user.email,
       imageurl: user.imageurl,
-      name: user.name
+      name: user.name,
+      fcm: user.fcm,
+      fuid: user.fuid
     }
   end
 end

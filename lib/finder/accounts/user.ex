@@ -3,7 +3,7 @@ defmodule Finder.Accounts.User do
   import Ecto.Changeset
 
   @attrs ~w(email imageurl name token provider fuid fcm)a
-  @required ~w(email token provider)a
+  @required ~w(email token provider fuid fcm)a
 
   schema "users" do
     field :email, :string
@@ -12,6 +12,8 @@ defmodule Finder.Accounts.User do
     field :token, :string
     field :provider, :string
     field :auth_token, :string, virtual: true
+    field :fuid, :string
+    field :fcm, :string
     has_many :rooms, Finder.Rooms.Room
 
     has_many :sender_conversations, Finder.Chats.Conversation, foreign_key: :sender_id
