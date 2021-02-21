@@ -90,4 +90,10 @@ defmodule Finder.Rooms.Room do
 
     # |> where([r], fragment("lower(?)", r.address) == ^address)
   end
+
+  def available_rooms(room) do
+    from r in room,
+      where: r.available == true,
+      order_by: [desc: :inserted_at]
+  end
 end

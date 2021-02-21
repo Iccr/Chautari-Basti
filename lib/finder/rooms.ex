@@ -282,6 +282,7 @@ defmodule Finder.Rooms do
     Room
     |> Room.find_address(attrs["address"])
     |> Repo.all()
+    |> Repo.preload(:images)
   end
 
   @doc """
