@@ -10,7 +10,7 @@ defmodule Finder.Rooms do
   alias Finder.Parkings
   alias Finder.Amenities
   alias Finder.Images.Image
-
+  alias Finder.Rooms.Filter
   @spec list_rooms :: nil | [%{optional(atom) => any}] | %{optional(atom) => any}
   @doc """
   Returns the list of rooms.
@@ -279,10 +279,21 @@ defmodule Finder.Rooms do
 
   def search(attrs) do
     # query
+    # query = from r in Room, where: r.user_id == ^user.id,
+    #       order_by: : [desc: :inserted_at],
+    #       preload: [:images]
+    IO.inspect(attrs["price_upper"])
+
     Room
-    |> Room.find_address(attrs["address"])
+    |> Filter.find_address(attrs["address"])
+    |> Filter.find_by_types(attrs["type"])
+    |> Filter.find_by_number_of_rooms_lower_bound(attrs["number_of_room_lower"])
+    |> Filter.find_by_district(attrs["district_name"])
+    |> Filter.find_by_water(attrs["water"])
+    |> Filter.find_by_price_lower_bound(attrs["price_lower"])
+    |> Filter.find_by_price_upper_bound(attrs["price_upper"])
     |> Repo.all()
-    |> Repo.preload(:images)
+    |> Repo.preload([:images])
   end
 
   @doc """
@@ -334,7 +345,7 @@ defmodule Finder.Rooms do
       %RoomTypes{name: "Hostel", value: 3},
       %RoomTypes{name: "Shutter", value: 4},
       %RoomTypes{name: "Office", value: 5},
-      %RoomTypes{name: "Commercial", value: 5}
+      %RoomTypes{name: "Commercial", value: 6}
     ]
   end
 

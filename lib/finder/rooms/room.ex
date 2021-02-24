@@ -34,7 +34,6 @@ defmodule Finder.Rooms.Room do
       on_replace: :delete
 
     has_many :images, Finder.Images.Image
-
     timestamps()
   end
 
@@ -75,25 +74,9 @@ defmodule Finder.Rooms.Room do
     end
   end
 
-  def find_address(query \\ Room, address)
-
-  def find_address(query, nil) do
-    query
-  end
-
-  def find_address(query, address) do
-    # address = String.downcase(address)
-    address = "%#{String.downcase(address)}%"
-
-    query
-    |> where([r], ilike(r.address, ^address))
-
-    # |> where([r], fragment("lower(?)", r.address) == ^address)
-  end
-
-  def available_rooms(room) do
-    from r in room,
-      where: r.available == true,
-      order_by: [desc: :inserted_at]
-  end
+  # def available_rooms(room) do
+  #   from r in room,
+  #     where: r.available == true,
+  #     order_by: [desc: :inserted_at]
+  # end
 end
