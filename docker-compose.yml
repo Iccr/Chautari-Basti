@@ -26,15 +26,15 @@ services:
           - 4000:4000
         networks:
           - chautari
-        # volumes:
-          # - /opt/finder/uploads:/live/finder/uploads
+        volumes:
+          - /opt/chautari/uploads:/live/chautari/uploads
 
     db:
         restart: always
         image: postgres:13.1
         ports:
         - 5432:5432
-        container_name: finder_db
+        container_name: postgres_db
         networks:
           - chautari
         environment: 
@@ -45,14 +45,14 @@ services:
            POSTGRES_POOLSIZE: 10
         # volumes:
           # - /tmp/.s.PGSQL.5432:/var/run/postgresql/.s.PGSQL.5432
-        # volumes:
-        #   - /opt/roomfinder/mysql_dump:/docker-echautarirypoichautari-initdb.d
-        #   - /opt/roomfinder/mysql:/var/lib/mysql
+        volumes:
+          - /opt/dev/postgres_dump:/docker-entrypoint-initdb.d
+          - /opt/dev/postgres:/var/lib/postgresql/data
 
     adminer:
       image: adminer
       restart: always
-      hostname: finder-database-server
+      hostname: postgres_db
       container_name: finder_adminer
       networks:
         - chautari
