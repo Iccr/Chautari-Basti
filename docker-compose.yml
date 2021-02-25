@@ -23,7 +23,7 @@ services:
           DIALECT: 'postgres'
           PORT: 4000
         ports:
-          - 4000:4000
+          - 4002:4000
         networks:
           - chautari
         volumes:
@@ -33,7 +33,7 @@ services:
         restart: always
         image: postgres:13.1
         ports:
-        - 5432:5432
+        - 4001:5432
         container_name: postgres_db
         networks:
           - chautari
@@ -57,4 +57,4 @@ services:
       networks:
         - chautari
       ports:
-        - 8080:8080
+        - 4000:8080
