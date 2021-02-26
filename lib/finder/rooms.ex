@@ -139,59 +139,6 @@ defmodule Finder.Rooms do
     |> put_change(:district_name, district.name)
   end
 
-  @doc """
-  Updates a room.
-
-  ## Examples
-
-      iex> update_room(room, %{field: new_value})
-      {:ok, %Room{}}
-
-      iex> update_room(room, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-
-  # def update_room(%Room{} = room, attrs) do
-  #   attrs = capitalize_address(attrs)
-  #   changeset = Room.changeset(room, attrs)
-
-  #   case changeset do
-  #     %Ecto.Changeset{valid?: false} ->
-  #       changeset
-  #       |> apply_action(:insert)
-
-  #     _ ->
-  #       parkings = Parkings.get_parkings(attrs["parkings"])
-  #       amenities = Amenities.get_amenities(attrs["amenities"])
-
-  #       {:ok, room} =
-  #         changeset
-  #         |> put_assoc(:amenities, amenities)
-  #         |> add_amenities_changes(amenities)
-  #         |> put_assoc(:parkings, parkings)
-  #         |> add_parking_changes(parkings)
-  #         |> Repo.update()
-
-  #       image_params = attrs["images"]
-
-  #       images_ids = room.images |> Enum.map(fn e -> e.id end)
-  #       query = from i in Image, where: i.id in ^images_ids
-  #       Repo.delete_all(query)
-
-  #       associates =
-  #         Enum.map(image_params, fn room_image ->
-  #           image_changeset = Image.changeset(%Image{}, %{image: room_image})
-  #           put_assoc(image_changeset, :room, room)
-  #         end)
-
-  #       insert_image(associates)
-  #       room = load_images(room)
-
-  #       {:ok, room}
-  #   end
-  # end
-
   def update_room(%Room{} = room, attrs) do
     # attrs = capitalize_address(attrs)
     changeset = update_room_changeset(room, attrs)
@@ -278,12 +225,6 @@ defmodule Finder.Rooms do
   end
 
   def search(attrs) do
-    # query
-    # query = from r in Room, where: r.user_id == ^user.id,
-    #       order_by: : [desc: :inserted_at],
-    #       preload: [:images]
-    IO.inspect(attrs["price_upper"])
-
     Room
     |> Filter.find_address(attrs["address"])
     |> Filter.find_by_types(attrs["type"])
@@ -331,9 +272,9 @@ defmodule Finder.Rooms do
 
   def water_types do
     [
-      %WaterTypes{name: "24/7", value: 0},
+      %WaterTypes{name: "24/7 unlimited", value: 0},
       %WaterTypes{name: "Enough for small family", value: 1},
-      %WaterTypes{name: "Enough for small family", value: 2}
+      %WaterTypes{name: "Enough for large family", value: 2}
     ]
   end
 
