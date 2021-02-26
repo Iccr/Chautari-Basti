@@ -124,8 +124,29 @@ defmodule Finder.Rooms.Filter do
   end
 
   def find_by_parkings(query, parkings) do
+    from(r in query,
+      inner_join: rp in Finder.Rooms.RoomParking,
+      on: rp.room_id == r.id,
+      inner_join: p in Finder.Parkings.Parking,
+      on: p.id == rp.parking_id,
+      where: p.id in ^parkings
+    )
+  end
+
+  def find_by_amenities(query \\ Room, amenities)
+
+  def find_by_amenities(query, nil) do
     query
-    |> where([r], r.parkings in ^parkings)
+  end
+
+  def find_by_amenities(query, amenities) do
+    from(r in query,
+      inner_join: ra in Finder.Rooms.RoomAmenity,
+      on: ra.room_id == r.id,
+      inner_join: a in Finder.Amenities.Amenity,
+      on: a.id == ra.amenity_id,
+      where: a.id in ^amenities
+    )
   end
 
   def order(query) do
@@ -133,27 +154,3 @@ defmodule Finder.Rooms.Filter do
     |> order_by(desc: :inserted_at)
   end
 end
-
-# field :address, :string
-#     field :lat, :decimal
-#     field :long, :decimal
-#     field :number_of_rooms, :integer ,, done
-#     field :price, :decimal ,
-#     field :state, :integer
-#     field :district_name, :string
-#     field :available, :boolean
-#     field :parking_count, :integer
-#     field :amenity_count, :integer
-#     field :water, :integer
-#     field :type, :integer
-#     field :phone, :string
-#     field :phone_visibility, :boolean
-
-#     belongs_to :district, Finder.Districts.District
-#     belongs_to :user, Finder.Accounts.User
-
-#     many_to_many :parkings, Finder.Parkings.Parking,
-#       join_through: Finder.Rooms.RoomParking,
-#       on_replace: :delete
-
-#     many_to_many :amenities, Finder.Amenities.Amenity,

@@ -233,6 +233,8 @@ defmodule Finder.Rooms do
     |> Filter.find_by_water(attrs["water"])
     |> Filter.find_by_price_lower_bound(attrs["price_lower"])
     |> Filter.find_by_price_upper_bound(attrs["price_upper"])
+    |> Filter.find_by_parkings(attrs["parkings"])
+    |> Filter.find_by_amenities(attrs["amenities"])
     |> Filter.order()
     |> Repo.all()
     |> Repo.preload([:images])
