@@ -127,6 +127,11 @@ defmodule Finder.Rooms.Filter do
     query
     |> where([r], r.parkings in ^parkings)
   end
+
+  def order(query) do
+    query
+    |> order_by(desc: :inserted_at)
+  end
 end
 
 # field :address, :string
