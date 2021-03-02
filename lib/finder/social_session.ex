@@ -11,7 +11,23 @@ defmodule Finder.SocialSession do
 
       "google" ->
         verify_google_token(token)
+
+      "apple" ->
+        nil
+        # case jsn do
+        #   {:ok, %{"error_description" => message}} ->
+        #     {:error, message}
+
+        #   {:ok, %{"name" => name, "email" => email}} ->
+        #     {:ok, name, email}
+
+        #   {:error, _} ->
+        #     {:error, "not allowed"}
+        # end
     end
+  end
+
+  defp verify_apple_token(token) do
   end
 
   defp verify_google_token(token) do
