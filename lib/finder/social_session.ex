@@ -69,21 +69,11 @@ defmodule Finder.SocialSession do
     end
   end
 
-  def get_user_from_params(%{"email" => email, "token" => token}) do
-    case Accounts.get_user_with_email(email) do
-      nil ->
-        Accounts.get_user_with_token(token)
-
-      user ->
-        user
-    end
+  def get_user_from_params(%{"token" => token}) do
+    Accounts.get_user_with_token(token)
   end
 
-  defp get_user_with_email_token(%{"email" => email, "token" => token}) do
-    Accounts.get_user_with_email_token(email, token)
-  end
-
-  defp get_user_with_email_token(%{"token" => token}) do
-    Accounts.get_user_with_email_token(nil, token)
-  end
+  # defp get_user_with_email_token(%{"token" => token}) do
+  #   Accounts.get_user_with_email_token(nil, token)
+  # end
 end
