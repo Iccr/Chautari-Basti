@@ -40,8 +40,6 @@ defmodule Finder.Rooms.Filter do
   end
 
   def find_by_number_of_rooms_lower_bound(query, lower) do
-    IO.inspect(lower)
-
     query
     |> where([r], r.number_of_rooms >= ^lower)
   end

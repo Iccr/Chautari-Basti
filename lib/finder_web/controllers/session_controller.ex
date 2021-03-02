@@ -4,56 +4,52 @@ defmodule FinderWeb.SessionController do
 
   alias Finder.Guardian
 
+  @spec login(any, map) :: {:error, any} | Plug.Conn.t()
   def login(conn, %{"user" => user_params}) do
-    user = get_user_with_email_token(user_params)
+    # user = get_user_with_email_token(user_params)
+    user = Finder.SocialSession.get_user_from_params(user_params)
+    IO.inspect(user)
 
     if user do
-      with {:ok, token, _claims} <- sign(user) do
-        user = Map.put(user, :auth_token, token)
-        show_user(conn, user)
-      end
+      sign_in_and_render(conn, user)
     else
-      result = Accounts.create_user(user_params)
+      case Finder.SocialSession.verify_token(user_params) do
+        {:error, message} ->
+          show_error(conn, message)
 
-      case result do
-        {:ok, user} ->
-          {:ok, token, _claims} = sign(user)
-          user = Map.put(user, :auth_token, token)
-          show_user(conn, user)
+        {:ok, name, email} ->
+          params = Map.put(user_params, "name", name)
+          params = Map.put(params, "email", email)
+          IO.puts("param")
+          IO.inspect(params)
 
-        {:error, %Ecto.Changeset{} = changeset} ->
-          conn
-          |> put_status(:unprocessable_entity)
-          |> put_view(FinderWeb.ChangesetView)
-          |> render("error.json", changeset: changeset)
+          case create_user(params) do
+            {:ok, user} ->
+              {:ok, token, _claims} = sign(user)
+              user = Map.put(user, :auth_token, token)
+
+              show_user(conn, user)
+
+            {:error, %Ecto.Changeset{} = changeset} ->
+              conn
+              |> put_status(:unprocessable_entity)
+              |> put_view(FinderWeb.ChangesetView)
+              |> render("error.json", changeset: changeset)
+          end
       end
     end
   end
 
-  # def verify_token(attrs) do
-  #   token = attrs["token"]
-  #
-  #   url =
-  #     "https://graph.facebook.com/me?fields=name,first_name,last_name,email,picture&access_token=" <>
-  #       token
-  #
-  #   {:ok, response} =
-  #     Task.async(fn -> HTTPoison.get(url) end)
-  #     |> Task.await()
-  #
-  #   jsn = Jason.decode(response.body)
-  #
-  #   case jsn do
-  #     {:ok, %{"error" => %{"message" => message}}} ->
-  #       {:error, message}
-  #
-  #     {:ok, %{"name" => name}} ->
-  #       {:ok, name}
-  #
-  #     {:error, _} ->
-  #       {:error, "not allowed"}
-  #   end
-  # end
+  def create_user(user_params) do
+    Accounts.create_user(user_params)
+  end
+
+  def sign_in_and_render(conn, user) do
+    with {:ok, token, _claims} <- sign(user) do
+      user = Map.put(user, :auth_token, token)
+      show_user(conn, user)
+    end
+  end
 
   def show_error(conn, message) do
     conn
@@ -63,14 +59,6 @@ defmodule FinderWeb.SessionController do
 
   def sign(user) do
     Guardian.encode_and_sign(user)
-  end
-
-  def get_user_with_email_token(%{"email" => email, "token" => token}) do
-    Accounts.get_user_with_email_token(email, token)
-  end
-
-  def get_user_with_email_token(%{"token" => token}) do
-    Accounts.get_user_with_email_token(nil, token)
   end
 
   def show_user(conn, user) do

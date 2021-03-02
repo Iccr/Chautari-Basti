@@ -113,6 +113,20 @@ defmodule Finder.Accounts do
     |> Enum.at(0)
   end
 
+  def get_user_with_token(token) do
+    query = from user in User, where: user.token == ^token
+
+    query
+    |> Repo.one()
+  end
+
+  def get_user_with_email(email) do
+    query = from user in User, where: user.email == ^email
+
+    query
+    |> Repo.one()
+  end
+
   def load_my_rooms(current_user) do
     current_user
     |> Repo.preload(rooms: {:images, :amenities, :parkings, :district})

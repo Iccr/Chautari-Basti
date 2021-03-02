@@ -69,7 +69,6 @@ defmodule FinderWeb.RoomController do
   end
 
   def search(conn, params) do
-    IO.inspect(params)
     rooms = Rooms.search(params)
     render(conn, "index.json", rooms: rooms)
   end
