@@ -1,6 +1,9 @@
-# Finder
-
 Api for Chutari Basti. Developed with elixir/ Phoenix and postgresql.
+Chautari Basti is an online basti for nepalese people. Here we can search for homes for rents.
+
+# Chautari Basti
+
+
 ## features:
  - social Authentication with facebook google and apple
  - Add your properties for rent.
