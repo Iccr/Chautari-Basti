@@ -49,16 +49,18 @@ defmodule FinderWeb.RoomController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case Rooms.get_room(id) do
+    case Rooms.get_image_preloaded_room_with(id) do
       nil ->
         {:error, :not_found}
 
       room ->
-        render(conn, "show.json", room: room)
-        # with {:ok, %Room{}} <- Rooms.delete_room(room) do
+        with {:ok, %Room{}} <- Rooms.delete_room(room) do
+          spawn(fn ->
+            Enum.each(room.images, fn e -> Finder.ImageUploader.delete({e.image, e}) end)
+          end)
 
-        #   render(conn, "show.json", room: room)
-        # end
+          render(conn, "show.json", room: room)
+        end
     end
   end
 
