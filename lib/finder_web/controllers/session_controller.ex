@@ -44,7 +44,20 @@ defmodule FinderWeb.SessionController do
 
     case user_params["provider"] do
       "apple" ->
-        Accounts.get_user_with_uid(user_id)
+        if(email) do
+          case Accounts.get_user_with_email(email) do
+            nil ->
+              Accounts.get_user_with_uid(user_id)
+
+            user ->
+              if(is_nil(user.fuild)) do
+                {:ok, user} = Accounts.update_user(user, %{fuid: user_id})
+                user
+              end
+
+              user
+          end
+        end
 
       _ ->
         Accounts.get_user_with_email(email)
