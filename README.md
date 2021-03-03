@@ -1,5 +1,17 @@
 # Finder
 
+Api for Chutari Basti. Developed with elixir/ Phoenix and postgresql.
+## features:
+ - social Authentication with facebook google and apple
+ - Add your properties for rent.
+ - search for your dream home
+ - filter fine tune your expectations
+ - chats you can connected with owner either by call or chat
+ - manage and update your properties. you have control what other can see.
+ - Free and open source
+
+
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
