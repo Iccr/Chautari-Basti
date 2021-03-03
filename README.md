@@ -1,4 +1,17 @@
-# Finder
+# Chautari Basti
+#### Chautari Basti is an online basti for nepalese people. Here we can search for homes for rents.
+
+
+## features:
+ - social Authentication with facebook google and apple
+ - Add your properties for rent.
+ - search for your dream home
+ - filter fine tune your expectations
+ - chats you can connected with owner either by call or chat
+ - manage and update your properties. you have control what other can see.
+ - Free and open source
+
+
 
 To start your Phoenix server:
 
