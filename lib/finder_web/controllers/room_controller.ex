@@ -54,9 +54,11 @@ defmodule FinderWeb.RoomController do
         {:error, :not_found}
 
       room ->
-        with {:ok, %Room{}} <- Rooms.delete_room(room) do
-          render(conn, "show.json", room: room)
-        end
+        render(conn, "show.json", room: room)
+        # with {:ok, %Room{}} <- Rooms.delete_room(room) do
+
+        #   render(conn, "show.json", room: room)
+        # end
     end
   end
 

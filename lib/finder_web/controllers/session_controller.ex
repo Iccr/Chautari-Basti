@@ -11,13 +11,16 @@ defmodule FinderWeb.SessionController do
         show_error(conn, message)
 
       {:ok, name, email} ->
-        user = Accounts.get_user_with_email(email)
+        user_id = user_params["user_id"]
+        user = find_user(user_params, email)
 
-        if user do
+        if(user) do
           sign_in_and_render(conn, user)
         else
           params = Map.put(user_params, "name", name)
           params = Map.put(params, "email", email)
+          params = Map.put(params, "fuid", user_id)
+          IO.inspect(params)
 
           case create_user(params) do
             {:ok, user} ->
@@ -33,6 +36,18 @@ defmodule FinderWeb.SessionController do
               |> render("error.json", changeset: changeset)
           end
         end
+    end
+  end
+
+  def find_user(user_params, email) do
+    user_id = user_params["user_id"]
+
+    case user_params["provider"] do
+      "apple" ->
+        Accounts.get_user_with_uid(user_id)
+
+      _ ->
+        Accounts.get_user_with_email(email)
     end
   end
 

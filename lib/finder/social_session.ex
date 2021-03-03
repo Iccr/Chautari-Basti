@@ -13,7 +13,16 @@ defmodule Finder.SocialSession do
         verify_google_token(token)
 
       "apple" ->
-        nil
+        name = attrs["name"]
+        email = attrs["email"]
+        {:ok, name, email}
+        # "token": credential.userIdentifier,
+        # "user_id": credential.userIdentifier,
+        # "provider": "apple",
+        # "name": name,
+        # "email": credential.email ?? "",
+        # "imageurl": "",
+
         # case jsn do
         #   {:ok, %{"error_description" => message}} ->
         #     {:error, message}

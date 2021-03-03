@@ -127,6 +127,13 @@ defmodule Finder.Accounts do
     |> Repo.one()
   end
 
+  def get_user_with_uid(uid) do
+    query = from user in User, where: user.fuid == ^uid
+
+    query
+    |> Repo.one()
+  end
+
   def load_my_rooms(current_user) do
     current_user
     |> Repo.preload(rooms: {:images, :amenities, :parkings, :district})
