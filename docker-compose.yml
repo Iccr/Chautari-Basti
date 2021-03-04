@@ -26,14 +26,14 @@ services:
           - 4002:4000
         networks:
           - chautari
-        # volumes:
-        #   - /opt/chautari/uploads:/live/chautari/uploads
+        volumes:
+          - /opt/chautari/uploads:/live/chautari/uploads
 
     db:
         restart: always
         image: postgres:13.1
         ports:
-        - 5432:5432
+        - 4001:5432
         container_name: postgres_db
         networks:
           - chautari
@@ -45,9 +45,9 @@ services:
            POSTGRES_POOLSIZE: 10
         # volumes:
           # - /tmp/.s.PGSQL.5432:/var/run/postgresql/.s.PGSQL.5432
-        # volumes:
-        #   - /opt/dev/postgres_dump:/docker-entrypoint-initdb.d
-        #   - /opt/dev/postgres:/var/lib/postgresql/data
+        volumes:
+          - /opt/dev/postgres_dump:/docker-entrypoint-initdb.d
+          - /opt/dev/postgres:/var/lib/postgresql/data
 
     adminer:
       image: adminer
