@@ -11,8 +11,8 @@ defmodule FinderWeb.SessionController do
         show_error(conn, message)
 
       {:ok, name, email} ->
-        user_id = user_params["user_id"]
         user = find_user(user_params, email)
+        user_id = user_params["user_id"]
 
         if(user) do
           sign_in_and_render(conn, user)
