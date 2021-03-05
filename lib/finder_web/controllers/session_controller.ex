@@ -15,6 +15,7 @@ defmodule FinderWeb.SessionController do
         user_id = user_params["user_id"]
 
         if(user) do
+          {:ok, user} = Accounts.update_user(user, %{"fcm" => user_params["fcm"]})
           sign_in_and_render(conn, user)
         else
           params = Map.put(user_params, "name", name)
