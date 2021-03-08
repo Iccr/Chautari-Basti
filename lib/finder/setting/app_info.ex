@@ -5,7 +5,7 @@ defmodule Finder.Setting.AppInfo do
   schema "appinfo" do
     field :android_version, :string
     field :app_key, :string
-    field :force_update, :string
+    field :force_update, :boolean
     field :ios_version, :string
 
     timestamps()

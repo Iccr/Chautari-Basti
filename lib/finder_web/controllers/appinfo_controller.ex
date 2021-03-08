@@ -5,11 +5,13 @@ defmodule FinderWeb.AppinfoController do
   alias Finder.Parkings
   alias Finder.Districts
   alias Finder.Rooms
+  alias Finder.Setting
 
   def index(conn, _params) do
     parkings = Parkings.list_parkings()
     amenities = Amenities.list_amenities()
     districts = Districts.list_districts()
+    config = Setting.get_app_info!(1)
 
     waters = Rooms.water_types()
     types = Rooms.room_types()
@@ -20,7 +22,8 @@ defmodule FinderWeb.AppinfoController do
       parkings: parkings,
       districts: districts,
       waters: waters,
-      types: types
+      types: types,
+      config: config
     )
   end
 end
