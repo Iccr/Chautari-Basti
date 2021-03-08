@@ -15,6 +15,6 @@ defmodule Finder.Setting.AppInfo do
   def changeset(app_info, attrs) do
     app_info
     |> cast(attrs, [:android_version, :ios_version, :app_key, :force_update])
-    |> validate_required([:android_version, :ios_version, :app_key, :force_update])
+    |> validate_required([:android_version, :ios_version, :force_update])
   end
 end

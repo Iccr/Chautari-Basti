@@ -6,7 +6,7 @@ defmodule Finder.Repo.Migrations.CreateAppinfo do
       add :android_version, :string
       add :ios_version, :string
       add :app_key, :string
-      add :force_update, :string
+      add :force_update, :bool, default: false
 
       timestamps()
     end
