@@ -4,6 +4,7 @@ defmodule Seed do
     seed_parkins()
     seed_waters()
     seed_amenities()
+    seed_appInfo()
   end
 
   def seed_districts do
@@ -49,6 +50,14 @@ defmodule Seed do
   defp get_district do
     File.read!("priv/repo/district.json")
     |> Jason.decode!()
+  end
+
+  def seed_appInfo() do
+    Finder.Setting.create_app_info(%{
+      android_version: "1.0.0",
+      ios_version: "1.0.0",
+      force_update: false
+    })
   end
 end
 
